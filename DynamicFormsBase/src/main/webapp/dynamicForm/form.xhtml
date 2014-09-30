@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    
+     <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.AppName} Dynamic Form"></h:outputText>
+        </ui:define>
+        
+        <ui:define name="body">
+            
+            
+            <h:form id="mainForm">
+                <p:panel header="Dynamic Form">
+                    
+                    <h:panelGroup id="dynaFormGroup">
+                        <p:messages id="messages" showSummary="true"/>
+
+                        <pe:dynaForm id="dynaForm" value="#{dynaFormController.model}" var="data">
+                            <pe:dynaFormControl type="input" for="txt">
+                                <p:inputText id="txt" value="#{data.value}" required="#{data.required}"/>
+                            </pe:dynaFormControl>
+                            <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">
+                                <p:calendar id="cal" value="#{data.value}" required="#{data.required}" showOn="button"/>
+                            </pe:dynaFormControl>
+                            <pe:dynaFormControl type="select" for="sel" styleClass="select">
+                                <p:selectOneMenu id="sel" value="#{data.value}" required="#{data.required}">
+                                    <f:selectItems value="#{dynaFormController.languages}"/>
+                                </p:selectOneMenu>
+                            </pe:dynaFormControl>
+                            <pe:dynaFormControl type="textarea" for="tarea">
+                                <p:inputTextarea id="tarea" value="#{data.value}" required="#{data.required}" autoResize="false"/>
+                            </pe:dynaFormControl>
+                            <pe:dynaFormControl type="rating" for="rat">
+                                <p:rating id="rat" value="#{data.value}" required="#{data.required}"/>
+                            </pe:dynaFormControl>
+
+                            <f:facet name="buttonBar">
+                                <p:commandButton value="Submit" action="#{dynaFormController.submitForm}"
+                                                 process="dynaForm" update=":mainForm:dynaFormGroup :mainForm:inputValues"
+                                                 oncomplete="handleComplete(xhr, status, args)" />
+                                <p:commandButton type="reset" value="Reset" style="margin-left: 5px;"/>
+                            </f:facet>
+                        </pe:dynaForm>
+                    </h:panelGroup>
+                    
+                    <p:dialog header="Input values" widgetVar="inputValuesWidget">
+                        <p:dataList id="inputValues" 
+                                    value="#{dynaFormController.bookProperties}"
+                                    var="bookProperty" style="margin:10px;">
+                            <h:outputText value="#{bookProperty.name}: #{bookProperty.formattedValue}"
+                                          style="margin-right: 10px;"/>
+                        </p:dataList>
+                    </p:dialog>
+                    
+                    
+                </p:panel>
+            </h:form>
+            
+            <script type="text/javascript">
+            //<![CDATA[
+                function handleComplete(xhr, status, args) {
+                    if(args && args.isValid) {
+                    PF('inputValuesWidget').show();
+                    } else {
+                    PF('inputValuesWidget').hide();
+                    }
+                }
+            //]]>
+            </script>
+            
+            
+        </ui:define>
+    </ui:composition>
+</html>
