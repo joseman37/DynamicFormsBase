@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema version="1.0"
+        targetNamespace="http://www.dynamicforms.mx/dynaform-1.0"
+        xmlns:df="http://www.dynamicforms.mx/dynaform-1.0"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified">
+
+  <annotation>
+    <documentation>
+        Dynamic Forms v1.0 Schema
+    </documentation>
+  </annotation>
+  
+    <!--
+    Every Dynaform XML instance must begin with this element.
+    -->
+    <element name="dynaform" type="df:dynaform"/>
+    
+    <!--
+    A Dynaform XML instance must contain a list of rows
+    -->
+    <complexType name="dynaform">
+    <sequence>
+        <element name="row" type="df:row" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+    </complexType>
+    
+    <!--
+    A row must contain a list of fields
+    -->
+    <complexType name="row">
+    <sequence>
+        <element name="field" type="df:field" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+    </complexType>
+    
+    <!--
+    A field contains: required attribute, label, id, type, colspan and rowspan
+    -->
+    <complexType name="field">
+        <all>
+            <element name="label" type="token" minOccurs="1"/>
+            <element name="id" type="token" minOccurs="1"/>
+            <element name="type" type="df:fieldType" minOccurs="1"/>
+            <element name="colspan" type="unsignedShort" minOccurs="0"/>
+            <element name="rowspan" type="unsignedShort" minOccurs="0"/>
+            <element name="selectItems" type="df:selectItems" minOccurs="0"/>
+        </all>
+        <attribute name="required" type="boolean" default="false"/>
+    </complexType>
+    
+    <!--
+    Dyna form FieldType
+    -->
+    <simpleType name="fieldType">
+        <restriction base="token">
+            <enumeration value="input"/>            
+            <enumeration value="calendar"/>            
+            <enumeration value="select"/>            
+            <enumeration value="textarea"/>            
+            <enumeration value="rating"/>            
+        </restriction>
+    </simpleType>
+    
+    <!--
+    SelectItems collection
+    -->
+    <complexType name="selectItems">
+        <all>
+            <element name="selectItem" type="df:selectItem" minOccurs="1" maxOccurs="unbounded"/>
+        </all>
+    </complexType>
+    
+    <!--
+    SelectItems contains value and label
+    -->
+    <complexType name="selectItem">
+        <all>
+            <element name="value" type="token" minOccurs="1"/>
+            <element name="label" type="token" minOccurs="0"/>
+        </all>
+    </complexType>
+
+</schema>

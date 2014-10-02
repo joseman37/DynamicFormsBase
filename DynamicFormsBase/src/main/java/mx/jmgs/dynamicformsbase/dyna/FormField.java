@@ -8,19 +8,22 @@ package mx.jmgs.dynamicformsbase.dyna;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import javax.faces.model.SelectItem;
 
-public class BookProperty implements Serializable {
+public class FormField implements Serializable {
  
     private String name;
     private Object value;
     private boolean required;
+    private List<SelectItem> selectItems; // TODO hacer items para selects
  
-    public BookProperty(String name, boolean required) {
+    public FormField(String name, boolean required) {
         this.name = name;
         this.required = required;
     }
  
-    public BookProperty(String name, Object value, boolean required) {
+    public FormField(String name, Object value, boolean required) {
         this.name = name;
         this.value = value;
         this.required = required;

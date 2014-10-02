@@ -4,12 +4,17 @@ package mx.jmgs.dynamicformsbase.jsf;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIOutput;
 import javax.faces.event.AjaxBehaviorEvent;
 
-@Named("loggedInUser")
+/**
+ * 
+ * @author pp
+ */
+//@Named("loggedInUser")
+@ManagedBean(name = "loggedInUser")
 @SessionScoped
 public class LoggedInUser implements Serializable {
 

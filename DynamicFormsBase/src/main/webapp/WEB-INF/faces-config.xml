@@ -5,7 +5,7 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <application>
         <resource-bundle>
-            <base-name>/Bundle</base-name>
+            <base-name>META-INF/Bundle</base-name>
             <var>bundle</var>
         </resource-bundle>
     </application>

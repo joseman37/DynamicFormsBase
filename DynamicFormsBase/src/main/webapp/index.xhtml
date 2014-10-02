@@ -12,13 +12,21 @@
         </ui:define>
         
         <ui:define name="body">
-            
-            <p:panel toggleable="true" header="Acme Pools Navigation">
-                <h:link outcome="/dynamicForm/form" value="Show All Forms"/>
-                <br />
+            <h:form id="mainForm">
+                <p:panel toggleable="true" header="Acme Pools Navigation">
+                    <h:link outcome="/dynamicForm/form" value="Show All Forms"/>
+                    <br />
+                    <p:panelGrid columns="2" >
+                        <p:outputLabel value="Select form:" for="forms"/>
+                        <p:selectOneMenu id="forms" value="#{dynaFormController.formName}" >
+                            <f:selectItems value="#{dynamicFormRepository.formList}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <br />
+                    <h:commandButton action="/dynamicForm/form" value="Go to form" />
 
-            </p:panel>
-            
+                </p:panel>
+            </h:form>
             
             
         </ui:define>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dynaform>
+  <row>
+    <field required="true">
+      <label>Author</label>
+      <id>Author</id>
+      <type>input</type>
+      <colspan>1</colspan>
+      <rowspan>1</rowspan>
+    </field>
+  </row>
+</dynaform>
