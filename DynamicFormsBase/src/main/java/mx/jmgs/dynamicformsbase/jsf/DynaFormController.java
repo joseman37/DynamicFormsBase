@@ -17,18 +17,20 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import mx.jmgs.dynamicformsbase.dyna.xml.DynamicForm;
+import mx.jmgs.dynamicformsbase.dyna.xml.Field;
+import mx.jmgs.dynamicformsbase.dyna.xml.FieldSelectItem;
+import mx.jmgs.dynamicformsbase.dyna.xml.Row;
+import mx.jmgs.dynamicformsbase.dyna.xml.SelectItems;
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
-import org.w3c.dom.Document;
 
 @ManagedBean
 @SessionScoped // TODO cambiarlo a viewScoped. Utilizar request parameter para especificar el form name.
 public class DynaFormController implements Serializable {
-
-    private static List<SelectItem> LANGUAGES = new ArrayList<SelectItem>();
 
     @ManagedProperty("#{dynamicFormRepository}")
     private DynamicFormRepository forms;
@@ -46,62 +48,44 @@ public class DynaFormController implements Serializable {
             model = new DynaFormModel();
 
             //Create the DynamicModel according to form name.
-            Document doc = forms.getForms().get(formName);
+            DynamicForm form = forms.getForms().get(formName);
             
-
-            // add rows, labels and editable controls
-            // set relationship between label and editable controls to support outputLabel with "for" attribute
-            // 1. row
-            DynaFormRow row = model.createRegularRow();
-
-            DynaFormLabel label11 = row.addLabel("Author", 1, 1);
-            DynaFormControl control12 = row.addControl(new FormField("Author", true), "input", 1, 1);
-            label11.setForControl(control12);
-
-            DynaFormLabel label13 = row.addLabel("ISBN", 1, 1);
-            DynaFormControl control14 = row.addControl(new FormField("ISBN", true), "input", 1, 1);
-            label13.setForControl(control14);
-
-            // 2. row
-            row = model.createRegularRow();
-
-            DynaFormLabel label21 = row.addLabel("Title", 1, 1);
-            DynaFormControl control22 = row.addControl(new FormField("Title", false), "input", 3, 1);
-            label21.setForControl(control22);
-
-            // 3. row
-            row = model.createRegularRow();
-
-            DynaFormLabel label31 = row.addLabel("Publisher", 1, 1);
-            DynaFormControl control32 = row.addControl(new FormField("Publisher", false), "input", 1, 1);
-            label31.setForControl(control32);
-
-            DynaFormLabel label33 = row.addLabel("Published on", 1, 1);
-            DynaFormControl control34 = row.addControl(new FormField("Published on", false), "calendar", 1, 1);
-            label33.setForControl(control34);
-
-            // 4. row
-            row = model.createRegularRow();
-
-            DynaFormLabel label41 = row.addLabel("Language", 1, 1);
-            DynaFormControl control42 = row.addControl(new FormField("Language", false), "select", 1, 1);
-            label41.setForControl(control42);
-
-            DynaFormLabel label43 = row.addLabel("Description", 1, 2);
-            DynaFormControl control44 = row.addControl(new FormField("Description", false), "textarea", 1, 2);
-            label43.setForControl(control44);
-
-            // 5. row
-            row = model.createRegularRow();
-
-            DynaFormLabel label51 = row.addLabel("Rating", 1, 1);
-            DynaFormControl control52 = row.addControl(new FormField("Rating", 3, true), "rating", 1, 1);
-            label51.setForControl(control52);
+            for(Row xmlRow : form.getRows()) {
+                // add rows, labels and editable controls
+                // set relationship between label and editable controls to support outputLabel with "for" attribute
+                // row
+                DynaFormRow row = model.createRegularRow();
+                for(Field field : xmlRow.getFields()) {
+                    DynaFormLabel label = null;
+                    if(field.getLabel() != null) {
+                        label = row.addLabel(field.getLabel());
+                    }
+                    FormField formField = new FormField(field.getId(), field.isRequired());
+                    
+                    //Get the field's SelectItems
+                    SelectItems xmlItems = field.getSelectItems();
+                    if(xmlItems != null) {
+                        List<SelectItem> items = new ArrayList<>();
+                        for(FieldSelectItem item : xmlItems.getSelectItem()) {
+                            items.add(new SelectItem(item.getValue(), item.getLabel()));
+                        }
+                        formField.setSelectItems(items);
+                    }
+                    
+                    //crete the field and label
+                    DynaFormControl control = row.addControl(formField,
+                            field.getType().value(), field.getColspan() != null ? field.getColspan() : 1,
+                            field.getRowspan()!=null? field.getRowspan() : 1);
+                     if(label != null) {
+                        label.setForControl(control);
+                     }
+                }
+            }
         }
         return model;
     }
 
-    public List<FormField> getBookProperties() {
+    public List<FormField> getUserResponse() {
         if (model == null) {
             return null;
         }
@@ -120,23 +104,12 @@ public class DynaFormController implements Serializable {
         return null;
     }
 
-    public List<SelectItem> getLanguages() {
-        if (LANGUAGES.isEmpty()) {
-            LANGUAGES.add(new SelectItem("en", "English"));
-            LANGUAGES.add(new SelectItem("de", "German"));
-            LANGUAGES.add(new SelectItem("ru", "Russian"));
-            LANGUAGES.add(new SelectItem("tr", "Turkish"));
-        }
-
-        return LANGUAGES;
-    }
-
     public String getFormName() {
         return formName;
     }
 
     public void setFormName(String formName) {
-        if (!this.formName.equals(formName)) {
+        if (this.formName!= null && !this.formName.equals(formName)) {
             //Create the DynamicModel according to form name.
             model = null;
         }

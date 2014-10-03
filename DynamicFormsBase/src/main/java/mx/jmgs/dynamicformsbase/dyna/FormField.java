@@ -16,7 +16,10 @@ public class FormField implements Serializable {
     private String name;
     private Object value;
     private boolean required;
-    private List<SelectItem> selectItems; // TODO hacer items para selects
+    /**
+     * items para selects
+     */
+    private List<SelectItem> selectItems;
  
     public FormField(String name, boolean required) {
         this.name = name;
@@ -24,9 +27,14 @@ public class FormField implements Serializable {
     }
  
     public FormField(String name, Object value, boolean required) {
+        this(name, value, required, null);
+    }
+    
+    public FormField(String name, Object value, boolean required, List<SelectItem> selectItems) {
         this.name = name;
         this.value = value;
         this.required = required;
+        this.selectItems = selectItems;
     }
  
     // getter // setter
@@ -63,6 +71,14 @@ public class FormField implements Serializable {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+    
+    public List<SelectItem> getSelectItems() {
+        return selectItems;
+    }
+
+    public void setSelectItems(List<SelectItem> selectItems) {
+        this.selectItems = selectItems;
     }
     
 }

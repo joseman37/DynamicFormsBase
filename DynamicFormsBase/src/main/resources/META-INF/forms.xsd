@@ -39,7 +39,7 @@
     -->
     <complexType name="field">
         <all>
-            <element name="label" type="token" minOccurs="1"/>
+            <element name="label" type="token" minOccurs="0"/>
             <element name="id" type="token" minOccurs="1"/>
             <element name="type" type="df:fieldType" minOccurs="1"/>
             <element name="colspan" type="unsignedShort" minOccurs="0"/>
@@ -58,7 +58,10 @@
             <enumeration value="calendar"/>            
             <enumeration value="select"/>            
             <enumeration value="textarea"/>            
-            <enumeration value="rating"/>            
+            <enumeration value="rating"/>       
+            <enumeration value="radiochoice"/>
+            <enumeration value="booleanchoice"/>
+            <enumeration value="separator"/>     
         </restriction>
     </simpleType>
     
@@ -66,9 +69,9 @@
     SelectItems collection
     -->
     <complexType name="selectItems">
-        <all>
+        <sequence>
             <element name="selectItem" type="df:selectItem" minOccurs="1" maxOccurs="unbounded"/>
-        </all>
+        </sequence>
     </complexType>
     
     <!--

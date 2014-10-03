@@ -30,7 +30,7 @@
                             </pe:dynaFormControl>
                             <pe:dynaFormControl type="select" for="sel" styleClass="select">
                                 <p:selectOneMenu id="sel" value="#{data.value}" required="#{data.required}">
-                                    <f:selectItems value="#{dynaFormController.languages}"/>
+                                    <f:selectItems value="#{data.selectItems}"/>
                                 </p:selectOneMenu>
                             </pe:dynaFormControl>
                             <pe:dynaFormControl type="textarea" for="tarea">
@@ -39,6 +39,20 @@
                             <pe:dynaFormControl type="rating" for="rat">
                                 <p:rating id="rat" value="#{data.value}" required="#{data.required}"/>
                             </pe:dynaFormControl>
+                            <pe:dynaFormControl type="separator" styleClass="separator ui-state-disabled">  
+                                <h:panelGrid columns="1" style="width:100%;" columnClasses="separatorText">  
+                                    <p:separator/>  
+                                </h:panelGrid>  
+                            </pe:dynaFormControl>  
+                            <pe:dynaFormControl type="booleanchoice">  
+                                <p:selectBooleanCheckbox value="#{data.value}" required="#{data.required}"  
+                                                         style="vertical-align:middle;"/>  
+                            </pe:dynaFormControl>  
+                            <pe:dynaFormControl type="radiochoice">  
+                                <p:selectOneRadio value="#{data.value}" required="#{data.required}">  
+                                    <f:selectItems value="#{data.selectItems}"/>  
+                                </p:selectOneRadio>  
+                            </pe:dynaFormControl> 
 
                             <f:facet name="buttonBar">
                                 <p:commandButton value="Submit" action="#{dynaFormController.submitForm}"
@@ -51,7 +65,7 @@
                     
                     <p:dialog header="Input values" widgetVar="inputValuesWidget">
                         <p:dataList id="inputValues" 
-                                    value="#{dynaFormController.bookProperties}"
+                                    value="#{dynaFormController.userResponse}"
                                     var="bookProperty" style="margin:10px;">
                             <h:outputText value="#{bookProperty.name}: #{bookProperty.formattedValue}"
                                           style="margin-right: 10px;"/>

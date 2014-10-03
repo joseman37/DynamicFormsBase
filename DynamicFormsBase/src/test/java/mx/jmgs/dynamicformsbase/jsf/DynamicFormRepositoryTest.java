@@ -2,6 +2,7 @@ package mx.jmgs.dynamicformsbase.jsf;
 
 import java.io.IOException;
 import java.util.Map;
+import mx.jmgs.dynamicformsbase.dyna.xml.DynamicForm;
 import org.w3c.dom.Document;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -22,8 +23,8 @@ public class DynamicFormRepositoryTest {
 
         DynamicFormRepository rep = new DynamicFormRepository();
         for (String fileName : rep.getForms().keySet()) {
-            Document doc = rep.getForms().get(fileName);
-            System.out.println(fileName + " : " + doc.getDocumentElement().getNodeName());
+            DynamicForm doc = rep.getForms().get(fileName);
+            System.out.println(fileName + " : " + doc.toString());
         }
     }
 
