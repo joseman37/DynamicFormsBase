@@ -7,16 +7,17 @@ package mx.jmgs.dynamicformsbase.jsf.theme;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 
-import javax.inject.Named;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 
 /**
  *
  * @author pp
  */
-@Named("themeService")
+//@Named("themeService")
+@ManagedBean
 @ApplicationScoped
 public class ThemeService {
      
