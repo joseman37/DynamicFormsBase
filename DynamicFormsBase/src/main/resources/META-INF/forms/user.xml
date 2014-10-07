@@ -1,81 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <df:dynaform xmlns:df="http://www.dynamicforms.mx/dynaform-1.0">
-    <df:row>
-        <df:field required="true">
-            <df:label>Short Name</df:label>
-            <df:id>ShortName</df:id>
-            <df:type>input</df:type>
-        </df:field>
-        <df:field>
-            <df:label>Street</df:label>
-            <df:id>Street</df:id>
-            <df:type>input</df:type>
-        </df:field>
-    </df:row>
-    <df:row>
-        <df:field required="true">
-            <df:label>Long Name</df:label>
-            <df:id>LongName</df:id>
-            <df:type>input</df:type>
-        </df:field>
-        <df:field>
-            <df:label>Zip Code, City</df:label>
-            <df:id>ZipCity</df:id>
-            <df:type>input</df:type>
-        </df:field>
-    </df:row>
-    <df:row>
-        <df:field>
-            <df:id>MakeChoise</df:id>
-            <df:type>separator</df:type>
-            <df:colspan>4</df:colspan>
-        </df:field>
-    </df:row>
-    <df:row>
-        <df:field>
-            <df:label>PrimeFaces fan?</df:label>
-            <df:id>fan</df:id>
-            <df:type>radiochoice</df:type>
-             <df:selectItems>
-                <df:selectItem>
-                    <df:label>Sure</df:label>
-                    <df:value>Sure</df:value>
-                </df:selectItem>
-                <df:selectItem>
-                    <df:label>Don't know</df:label>
-                    <df:value>Don't know</df:value>
-                </df:selectItem>
-            </df:selectItems>
-        </df:field>
-        <df:field>
-            <df:label>Married?</df:label>
-            <df:id>Married</df:id>
-            <df:type>booleanchoice</df:type>
-        </df:field>
-    </df:row>
-    <df:row>
-        <df:field>
-            <df:label>Children</df:label>
-            <df:id>Children</df:id>
-            <df:type>radiochoice</df:type>
-             <df:selectItems>
-                <df:selectItem>
-                    <df:label>No</df:label>
-                    <df:value>No</df:value>
-                </df:selectItem>
-                <df:selectItem>
-                    <df:label>1</df:label>
-                    <df:value>1</df:value>
-                </df:selectItem>
-                <df:selectItem>
-                    <df:label>2</df:label>
-                    <df:value>2</df:value>
-                </df:selectItem>
-                <df:selectItem>
-                    <df:label>More</df:label>
-                    <df:value>More</df:value>
-                </df:selectItem>
-            </df:selectItems>
-        </df:field>
-    </df:row>
+	<df:row>
+		<df:label text="Short Name" for="ShortName" />
+		<df:label text="Street" />
+	</df:row>
+	<df:row>
+		<df:field id="ShortName" type="input" required="true" />
+		<df:field id="Street" type="input" colspan="2" />
+	</df:row>
+	<df:row>
+		<df:label text="Long Name" for="LongName" />
+		<df:label text="Zip Code, City" />
+	</df:row>
+	<df:row>
+		<df:field id="LongName" type="input" required="true" />
+		<df:field id="ZipCity" type="input" colspan="2" />
+	</df:row>
+	<df:row>
+		<df:separator text="MakeChoice" colspan="3" />
+	</df:row>
+	<df:row>
+		<df:label text="PrimeFaces fan?" />
+		<df:label text="Married?" />
+		<df:label text="Children" />
+	</df:row>
+	<df:row>
+		<df:field id="fan" type="radiochoice">
+			<df:selectItem>
+				<df:label>Sure</df:label>
+				<df:value>Sure</df:value>
+			</df:selectItem>
+			<df:selectItem>
+				<df:label>Don't know</df:label>
+				<df:value>Don't know</df:value>
+			</df:selectItem>
+		</df:field>
+		<df:field id="Married" type="booleanchoice" />
+		<df:field id="Children" type="radiochoice">
+			<df:selectItem>
+				<df:label>No</df:label>
+				<df:value>No</df:value>
+			</df:selectItem>
+			<df:selectItem>
+				<df:label>1</df:label>
+				<df:value>1</df:value>
+			</df:selectItem>
+			<df:selectItem>
+				<df:label>2</df:label>
+				<df:value>2</df:value>
+			</df:selectItem>
+			<df:selectItem>
+				<df:label>More</df:label>
+				<df:value>More</df:value>
+			</df:selectItem>
+		</df:field>
+	</df:row>
 </df:dynaform>

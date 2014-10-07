@@ -26,28 +26,64 @@
     </complexType>
     
     <!--
-    A row must contain a list of fields
+    A row must contain a list of Form elements
     -->
     <complexType name="row">
     <sequence>
-        <element name="field" type="df:field" minOccurs="1" maxOccurs="unbounded"/>
+        <element ref="df:formElement" minOccurs="1" maxOccurs="unbounded"/>
     </sequence>
     </complexType>
+
+	<!--
+    Abstract Form Element for replacement via substitution.
+    -->
+    <element name="formElement" type="df:formElement" abstract="true" />
+	<complexType name="formElement">
+        <attribute name="colspan" type="unsignedShort" default="1"/>
+        <attribute name="rowspan" type="unsignedShort" default="1"/>
+	</complexType>
+	
+	<!--
+    Label is a formElement instance
+    -->
+    <element name="label" type="df:label" substitutionGroup="df:formElement"/>
+	<complexType name="label">
+		<complexContent>
+			<extension base="df:formElement">
+				<attribute name="text" type="string" use="required" />
+				<attribute name="for" type="token" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    Label is a formElement instance
+    -->
+    <element name="separator" type="df:separator" substitutionGroup="df:formElement"/>
+	<complexType name="separator">
+		<complexContent>
+			<extension base="df:formElement">
+				<attribute name="text" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
     
     <!--
-    A field contains: required attribute, label, id, type, colspan and rowspan
+    A field contains: required attribute, id, type, colspan, rowspan and a list of select items
     -->
-    <complexType name="field">
-        <all>
-            <element name="label" type="token" minOccurs="0"/>
-            <element name="id" type="token" minOccurs="1"/>
-            <element name="type" type="df:fieldType" minOccurs="1"/>
-            <element name="colspan" type="unsignedShort" minOccurs="0"/>
-            <element name="rowspan" type="unsignedShort" minOccurs="0"/>
-            <element name="selectItems" type="df:selectItems" minOccurs="0"/>
-        </all>
-        <attribute name="required" type="boolean" default="false"/>
-    </complexType>
+    <element name="field" type="df:field" substitutionGroup="df:formElement"/>
+	<complexType name="field">
+		<complexContent>
+			<extension base="df:formElement">
+				<sequence>
+					<element name="selectItem" type="df:selectItem" minOccurs="0" maxOccurs="unbounded" />
+				</sequence>
+				<attribute name="id" type="token" use="required" />
+				<attribute name="type" type="df:fieldType" use="required" />
+				<attribute name="required" type="boolean" default="false" />
+			</extension>
+		</complexContent>
+	</complexType>
     
     <!--
     Dyna form FieldType
@@ -60,19 +96,9 @@
             <enumeration value="textarea"/>            
             <enumeration value="rating"/>       
             <enumeration value="radiochoice"/>
-            <enumeration value="booleanchoice"/>
-            <enumeration value="separator"/>     
+            <enumeration value="booleanchoice"/>    
         </restriction>
     </simpleType>
-    
-    <!--
-    SelectItems collection
-    -->
-    <complexType name="selectItems">
-        <sequence>
-            <element name="selectItem" type="df:selectItem" minOccurs="1" maxOccurs="unbounded"/>
-        </sequence>
-    </complexType>
     
     <!--
     SelectItems contains value and label

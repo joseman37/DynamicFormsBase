@@ -7,15 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+
 import mx.jmgs.dynamicformsbase.dyna.xml.DynamicForm;
+
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
@@ -51,13 +55,14 @@ public class DynamicFormRepository {
                     is.close();
                 } catch (JAXBException | SAXException ex) {
                     Logger.getLogger(DynamicFormRepository.class.getName()).log(Level.SEVERE, null, ex);
-                    throw new RuntimeException("Error while reading dynamic forms spec data", ex);
+                    throw new RuntimeException("Error while reading dynamic forms spec data: " + ex.getMessage(), ex);
                 }
             }
         }
         return forms;
     }
     
+    @SuppressWarnings("unchecked")
     private DynamicForm readXmlForm(InputStream is) throws JAXBException, SAXException {
         if(is == null) {
             throw new RuntimeException("couldn't find the dynamic form definition");
@@ -72,8 +77,10 @@ public class DynamicFormRepository {
                 .getClassLoader().getResource("META-INF/forms.xsd"));
         jaxbUnmarshaller.setSchema(schema);
         
-        // this will create Java object - country from the XML file
-        DynamicForm form = (DynamicForm) jaxbUnmarshaller.unmarshal(is);
+        // this will create Java object - DynamicForm from the XML file
+        // Since the xsd have more than one root element we must use JAXBElement instead of:
+        // DynamicForm form = (DynamicForm) jaxbUnmarshaller.unmarshal(is);      
+		DynamicForm form = ((JAXBElement<DynamicForm>)jaxbUnmarshaller.unmarshal(is)).getValue();
         return form;
     }
 

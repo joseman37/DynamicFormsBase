@@ -6,10 +6,17 @@
 package mx.jmgs.dynamicformsbase.jsf;
 
 import java.io.IOException;
+
 import mx.jmgs.dynamicformsbase.dyna.FormField;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -17,11 +24,16 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.xml.bind.JAXBElement;
+
 import mx.jmgs.dynamicformsbase.dyna.xml.DynamicForm;
 import mx.jmgs.dynamicformsbase.dyna.xml.Field;
 import mx.jmgs.dynamicformsbase.dyna.xml.FieldSelectItem;
+import mx.jmgs.dynamicformsbase.dyna.xml.FormElement;
+import mx.jmgs.dynamicformsbase.dyna.xml.FormSeparator;
+import mx.jmgs.dynamicformsbase.dyna.xml.Label;
 import mx.jmgs.dynamicformsbase.dyna.xml.Row;
-import mx.jmgs.dynamicformsbase.dyna.xml.SelectItems;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
 import org.primefaces.extensions.model.dynaform.DynaFormLabel;
@@ -32,6 +44,8 @@ import org.primefaces.extensions.model.dynaform.DynaFormRow;
 @SessionScoped // TODO cambiarlo a viewScoped. Utilizar request parameter para especificar el form name.
 public class DynaFormController implements Serializable {
 
+	private static final String SEPARATOR_TYPE = "separator";
+	
     @ManagedProperty("#{dynamicFormRepository}")
     private DynamicFormRepository forms;
 
@@ -49,38 +63,55 @@ public class DynaFormController implements Serializable {
 
             //Create the DynamicModel according to form name.
             DynamicForm form = forms.getForms().get(formName);
+            //fila de labels
+            Queue<LabelInfo> queue = new LinkedList<>();
+            //fields' hash map
+            Map<String, DynaFormControl> controlMap = new HashMap<>();
             
             for(Row xmlRow : form.getRows()) {
                 // add rows, labels and editable controls
                 // set relationship between label and editable controls to support outputLabel with "for" attribute
                 // row
                 DynaFormRow row = model.createRegularRow();
-                for(Field field : xmlRow.getFields()) {
-                    DynaFormLabel label = null;
-                    if(field.getLabel() != null) {
-                        label = row.addLabel(field.getLabel());
-                    }
-                    FormField formField = new FormField(field.getId(), field.isRequired());
-                    
-                    //Get the field's SelectItems
-                    SelectItems xmlItems = field.getSelectItems();
-                    if(xmlItems != null) {
-                        List<SelectItem> items = new ArrayList<>();
-                        for(FieldSelectItem item : xmlItems.getSelectItem()) {
-                            items.add(new SelectItem(item.getValue(), item.getLabel()));
-                        }
-                        formField.setSelectItems(items);
-                    }
-                    
-                    //crete the field and label
-                    DynaFormControl control = row.addControl(formField,
-                            field.getType().value(), field.getColspan() != null ? field.getColspan() : 1,
-                            field.getRowspan()!=null? field.getRowspan() : 1);
-                     if(label != null) {
-                        label.setForControl(control);
-                     }
+                for(JAXBElement<FormElement> obj : xmlRow.getFormElements()) {
+                	FormElement element = (FormElement)obj.getValue();
+                	if(element instanceof Label) {
+                		Label control = (Label)element;
+                		DynaFormLabel  label = row.addLabel(control.getText(), control.getColspan(), control.getRowspan());
+                		if(control.getFor()!= null) {
+                			queue.add(new LabelInfo(label, control.getFor()));
+                		}
+                	} else if (element instanceof FormSeparator) {
+                		FormSeparator control = (FormSeparator)element;
+                		row.addControl(control.getText(), SEPARATOR_TYPE, control.getColspan(), control.getRowspan());
+                	} else if (element instanceof Field) {
+                		Field field = (Field)element;
+                		 FormField formField = new FormField(field.getId(), field.isRequired());
+                		//Get the field's SelectItems
+                         List<FieldSelectItem> xmlItems = field.getSelectItems();
+                         if(xmlItems!= null && !xmlItems.isEmpty()) {
+                             List<SelectItem> items = new ArrayList<>();
+                             for(FieldSelectItem item : xmlItems) {
+                                 items.add(new SelectItem(item.getValue(), item.getLabel()));
+                             }
+                             formField.setSelectItems(items);
+                         }
+                       
+                         //crete the field.
+                         DynaFormControl control = row.addControl(formField,
+                                 field.getType().value(), field.getColspan(), field.getRowspan());
+                         // Add to the map
+                         controlMap.put(field.getId(), control);
+                	}
                 }
             }
+            //Asignar los labels A los fields.
+            LabelInfo labelInfo;
+            while ((labelInfo = queue.poll()) != null) {
+            	DynaFormLabel label = labelInfo.getLabel();
+            	label.setForControl(controlMap.get(labelInfo.getForControlId()));
+            }
+            
         }
         return model;
     }
@@ -89,11 +120,13 @@ public class DynaFormController implements Serializable {
         if (model == null) {
             return null;
         }
-        List<FormField> bookProperties = new ArrayList<FormField>();
-        for (DynaFormControl dynaFormControl : model.getControls()) {
-            bookProperties.add((FormField) dynaFormControl.getData());
-        }
-        return bookProperties;
+        List<FormField> formFields = new ArrayList<FormField>();
+		for (DynaFormControl dynaFormControl : model.getControls()) {
+			if (dynaFormControl.getData() instanceof FormField) {
+				formFields.add((FormField) dynaFormControl.getData());
+			}
+		}
+        return formFields;
     }
 
     public String submitForm() {
@@ -122,5 +155,48 @@ public class DynaFormController implements Serializable {
 
     public void setForms(DynamicFormRepository forms) {
         this.forms = forms;
+    }
+    
+    /**
+     * Internal class used to pass the information of label to the creation process queue.
+     * @author Jose
+     *
+     */
+    private class LabelInfo {
+    	
+    	private DynaFormLabel label;
+    	
+    	private String forControlId;
+    	
+		public LabelInfo(DynaFormLabel label, String forControlId) {
+			super();
+			this.label = label;
+			this.forControlId = forControlId;
+		}
+		/**
+		 * @return the label
+		 */
+		public DynaFormLabel getLabel() {
+			return label;
+		}
+		/**
+		 * @param label the label to set
+		 */
+		public void setLabel(DynaFormLabel label) {
+			this.label = label;
+		}
+		/**
+		 * @return the forControlId
+		 */
+		public String getForControlId() {
+			return forControlId;
+		}
+		/**
+		 * @param forControlId the forControlId to set
+		 */
+		public void setForControlId(String forControlId) {
+			this.forControlId = forControlId;
+		}
+    	
     }
 }

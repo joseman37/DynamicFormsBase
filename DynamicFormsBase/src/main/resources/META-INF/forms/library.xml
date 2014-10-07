@@ -1,83 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <df:dynaform xmlns:df="http://www.dynamicforms.mx/dynaform-1.0">
   <df:row>
-    <df:field required="true">
-      <df:label>Author</df:label>
-      <df:id>Author</df:id>
-      <df:type>input</df:type>
-      <df:colspan>1</df:colspan>
-      <df:rowspan>1</df:rowspan>
-    </df:field>
-    <df:field required="true">
-      <df:label>ISBN</df:label>
-      <df:id>ISBN</df:id>
-      <df:type>input</df:type>
-      <df:colspan>1</df:colspan>
-      <df:rowspan>1</df:rowspan>
-    </df:field>
+  	<df:label text="Author" for="Author"/>
+    <df:field id="Author" type="input" colspan="1" rowspan="1" required="true"/>
+    <df:label text="ISBN" for="ISBN"/>
+    <df:field id="ISBN" type="input" colspan="1" rowspan="1" required="true"/>
   </df:row>
   <df:row>
-      <df:field required="true">
-      <df:label>Title</df:label>
-      <df:id>Title</df:id>
-      <df:type>input</df:type>
-      <df:colspan>3</df:colspan>
-      <df:rowspan>1</df:rowspan>
-    </df:field>
+  	<df:label text="Title" for="Title"/>
+    <df:field id="Title" type="input" colspan="3" rowspan="1" required="true"/>
   </df:row>
   <df:row>
-    <df:field>
-      <df:label>Publisher</df:label>
-      <df:id>Publisher</df:id>
-      <df:type>input</df:type>
-      <df:colspan>1</df:colspan>
-      <df:rowspan>1</df:rowspan>
-    </df:field>
-    <df:field>
-      <df:label>Published on</df:label>
-      <df:id>PublishedOn</df:id>
-      <df:type>calendar</df:type>
-      <df:colspan>1</df:colspan>
-      <df:rowspan>1</df:rowspan>
-    </df:field>
+  	<df:label text="Publisher"/>
+    <df:field id="Publisher" type="input" colspan="1" rowspan="1"/>
+    <df:label text="Published on" for="PublishedOn"/>
+    <df:field id="PublishedOn" type="calendar" colspan="1" rowspan="1"/>
   </df:row>
   <df:row>
-      <df:field>
-      <df:label>Language</df:label>
-      <df:id>Language</df:id>
-      <df:type>select</df:type>
-      <df:colspan>1</df:colspan>
-      <df:rowspan>1</df:rowspan>
-      <df:selectItems>
-          <df:selectItem>
-              <df:label>English</df:label><df:value>en</df:value>
-          </df:selectItem>
-          <df:selectItem>
-              <df:label>German</df:label><df:value>de</df:value>
-          </df:selectItem>
-          <df:selectItem>
-              <df:label>Russian</df:label><df:value>ru</df:value>
-          </df:selectItem>
-          <df:selectItem>
-              <df:label>Turkish</df:label><df:value>tr</df:value>
-          </df:selectItem>
-      </df:selectItems>
-    </df:field>
-    <df:field>
-      <df:label>Description</df:label>
-      <df:id>Description</df:id>
-      <df:type>textarea</df:type>
-      <df:colspan>1</df:colspan>
-      <df:rowspan>2</df:rowspan>
-    </df:field>
+  	<df:label text="Language"/>
+	<df:field id="Language" type="select" colspan="1" rowspan="1">
+		<df:selectItem>
+			<df:label>English</df:label>
+			<df:value>en</df:value>
+		</df:selectItem>
+		<df:selectItem>
+			<df:label>German</df:label>
+			<df:value>de</df:value>
+		</df:selectItem>
+		<df:selectItem>
+			<df:label>Russian</df:label>
+			<df:value>ru</df:value>
+		</df:selectItem>
+		<df:selectItem>
+			<df:label>Turkish</df:label>
+			<df:value>tr</df:value>
+		</df:selectItem>
+	</df:field>
+	<df:label text="Description"/>
+    <df:field id="Description" type="textarea" colspan="1" rowspan="2"/>
   </df:row>
   <df:row>
-    <df:field>
-      <df:label>Rating</df:label>
-      <df:id>Rating</df:id>
-      <df:type>rating</df:type>
-      <df:colspan>1</df:colspan>
-      <df:rowspan>1</df:rowspan>
-    </df:field>
+  	<df:label text="Rating"/>
+    <df:field id="Rating" type="rating" colspan="1" rowspan="1"/>
   </df:row>
 </df:dynaform>
