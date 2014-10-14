@@ -25,7 +25,14 @@
                         <p:menuitem value="dyna form" outcome="/dynamicForm/form.xhtml" icon="ui-icon-document"/>
                         
                     </p:menubar>
-                    
+                    <h:panelGrid columns="2">
+						Language : 
+						<h:selectOneMenu value="#{language.localeCode}" onchange="submit()"
+							valueChangeListener="#{language.countryLocaleCodeChanged}">
+				   			<f:selectItems value="#{language.countriesInMap}" /> 
+				   		</h:selectOneMenu>
+				 
+					</h:panelGrid>
                 </h:form>
             </p:layoutUnit>
 

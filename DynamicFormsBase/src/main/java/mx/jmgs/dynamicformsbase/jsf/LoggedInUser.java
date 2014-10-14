@@ -18,8 +18,12 @@ import javax.faces.event.AjaxBehaviorEvent;
 @SessionScoped
 public class LoggedInUser implements Serializable {
 
-    private Map<String, String> preferences = null;
-    
+    /**
+	 * Helps serialization.
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Map<String, String> preferences = null;
 
     public LoggedInUser() {
         preferences = new HashMap<>();
