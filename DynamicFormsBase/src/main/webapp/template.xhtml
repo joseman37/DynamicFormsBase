@@ -6,6 +6,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+<f:view locale="#{language.localeCode}">
+
     <h:head>
         <title><ui:insert name="title">Default Title</ui:insert></title>
         <h:outputStylesheet library="css" name="jsfcrud.css"/>
@@ -22,11 +24,11 @@
                     <p:menubar style="margin:20px 0px 0px 0px">
                         <p:menuitem value="#{bundle.Home}" outcome="/index" icon="ui-icon-home" />
                         
-                        <p:menuitem value="dyna form" outcome="/dynamicForm/form.xhtml" icon="ui-icon-document"/>
+                        <p:menuitem value="#{bundle.DynamicForm}" outcome="/dynamicForm/form.xhtml" icon="ui-icon-document"/>
                         
                     </p:menubar>
                     <h:panelGrid columns="2">
-						Language : 
+						<h:outputLabel>#{bundle.language}:</h:outputLabel> 
 						<h:selectOneMenu value="#{language.localeCode}" onchange="submit()"
 							valueChangeListener="#{language.countryLocaleCodeChanged}">
 				   			<f:selectItems value="#{language.countriesInMap}" /> 
@@ -41,9 +43,9 @@
                     <p:toolbar>
                         <f:facet name="right">
                             <h:panelGrid columns="2">
-                                <p:outputLabel for="advanced" value="Theme:" /> 
+                                <p:outputLabel for="advanced" value="#{bundle.Theme}:" /> 
                                 <p:themeSwitcher id="advanced" style="width:165px" effect="fade">
-                                    <f:selectItem itemLabel="Choose Theme" itemValue="" />
+                                    <f:selectItem itemLabel="----------" itemValue="" />
                                     <f:selectItems value="#{themeService.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme.name}" />
                                     <p:ajax listener="#{loggedInUser.saveTheme}" />
                                 </p:themeSwitcher>
@@ -60,5 +62,7 @@
         </p:layout>
 
     </h:body>
+
+</f:view>
 
 </html>

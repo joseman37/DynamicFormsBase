@@ -6,6 +6,8 @@
 package mx.jmgs.dynamicformsbase.jsf;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import mx.jmgs.dynamicformsbase.dyna.FormField;
 
@@ -14,8 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
+import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -26,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.xml.bind.JAXBElement;
 
+import mx.jmgs.dynamicformsbase.dyna.xml.Bundle;
 import mx.jmgs.dynamicformsbase.dyna.xml.DynamicForm;
 import mx.jmgs.dynamicformsbase.dyna.xml.Field;
 import mx.jmgs.dynamicformsbase.dyna.xml.FieldSelectItem;
@@ -40,9 +45,20 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
+import freemarker.cache.StringTemplateLoader;
+import freemarker.ext.beans.ResourceBundleModel;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
 @ManagedBean
 @SessionScoped // TODO cambiarlo a viewScoped. Utilizar request parameter para especificar el form name.
 public class DynaFormController implements Serializable {
+
+	/**
+	 * Helps serialization
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private static final String SEPARATOR_TYPE = "separator";
 	
@@ -57,8 +73,10 @@ public class DynaFormController implements Serializable {
 
     }
 
-    public DynaFormModel getModel() throws IOException {
-        if (model == null) {
+    @SuppressWarnings("unchecked")
+	public DynaFormModel getModel() throws IOException {
+        //TODO revisar cuando cambia el lenguaje para restablecer el modelo
+    	if (model == null) {
             model = new DynaFormModel();
 
             //Create the DynamicModel according to form name.
@@ -68,6 +86,17 @@ public class DynaFormController implements Serializable {
             //fields' hash map
             Map<String, DynaFormControl> controlMap = new HashMap<>();
             
+            // read bundles
+            HashMap<String, Object> bundles = new HashMap<>();
+            ResourceBundle rb = null;
+            Locale locale =  FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            for(Bundle xmlBundle : form.getBundles()) {
+            	rb = ResourceBundle.getBundle(xmlBundle.getBaseName(), locale);
+            	bundles.put(xmlBundle.getVar(), rb);
+            	
+            }
+            
+            //Read rows
             for(Row xmlRow : form.getRows()) {
                 // add rows, labels and editable controls
                 // set relationship between label and editable controls to support outputLabel with "for" attribute
@@ -77,7 +106,9 @@ public class DynaFormController implements Serializable {
                 	FormElement element = (FormElement)obj.getValue();
                 	if(element instanceof Label) {
                 		Label control = (Label)element;
-                		DynaFormLabel  label = row.addLabel(control.getText(), control.getColspan(), control.getRowspan());
+                		//TODO see if we need to clone the data passed to the method getText().
+                		String text = getText(control.getText(), bundles);
+                		DynaFormLabel  label = row.addLabel(text, control.getColspan(), control.getRowspan());
                 		if(control.getFor()!= null) {
                 			queue.add(new LabelInfo(label, control.getFor()));
                 		}
@@ -135,6 +166,24 @@ public class DynaFormController implements Serializable {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.addCallbackParam("isValid", !hasErrors);
         return null;
+    }
+    
+    /**
+     * Process the template of the form. in the specified local.
+     * @param templateStr
+     * @param data Data for the template. It will be clonned by this method.
+     * @return
+     */
+    public String getText(String templateStr, HashMap<String, Object> data) {
+		try {
+			Template template = forms.getTemplate(templateStr);
+			
+			StringWriter sw = new StringWriter();
+			template.process(data, sw);
+			return sw.toString();
+		} catch (IOException | TemplateException e) {
+			throw new RuntimeException("Error while loading template", e);
+		} 
     }
 
     public String getFormName() {

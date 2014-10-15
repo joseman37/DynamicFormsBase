@@ -16,7 +16,7 @@
             
             
             <h:form id="mainForm">
-                <p:panel header="Dynamic Form">
+                <p:panel header="#{bundle.DynamicForm}">
                     
                     <h:panelGroup id="dynaFormGroup">
                         <p:messages id="messages" showSummary="true"/>
@@ -55,10 +55,10 @@
                             </pe:dynaFormControl> 
 
                             <f:facet name="buttonBar">
-                                <p:commandButton value="Submit" action="#{dynaFormController.submitForm}"
+                                <p:commandButton value="#{bundle.Submit}" action="#{dynaFormController.submitForm}"
                                                  process="dynaForm" update=":mainForm:dynaFormGroup :mainForm:inputValues"
                                                  oncomplete="handleComplete(xhr, status, args)" />
-                                <p:commandButton type="reset" value="Reset" style="margin-left: 5px;"/>
+                                <p:commandButton type="reset" value="#{bundle.Reset}" style="margin-left: 5px;"/>
                             </f:facet>
                         </pe:dynaForm>
                     </h:panelGroup>

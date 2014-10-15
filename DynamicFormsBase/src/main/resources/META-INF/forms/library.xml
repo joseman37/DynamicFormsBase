@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <df:dynaform xmlns:df="http://www.dynamicforms.mx/dynaform-1.0">
+  <df:bundle baseName="META-INF/bundles/forms/library" var="bundle"/>
   <df:row>
-  	<df:label text="Author" for="Author"/>
+  	<df:label text="${bundle.Author}" for="Author"/>
     <df:field id="Author" type="input" colspan="1" rowspan="1" required="true"/>
-    <df:label text="ISBN" for="ISBN"/>
+    <df:label text="${bundle.ISBN}" for="ISBN"/>
     <df:field id="ISBN" type="input" colspan="1" rowspan="1" required="true"/>
   </df:row>
   <df:row>
-  	<df:label text="Title" for="Title"/>
+  	<df:label text="${bundle.Title}" for="Title"/>
     <df:field id="Title" type="input" colspan="3" rowspan="1" required="true"/>
   </df:row>
   <df:row>
-  	<df:label text="Publisher"/>
+  	<df:label text="${bundle.Publisher}"/>
     <df:field id="Publisher" type="input" colspan="1" rowspan="1"/>
-    <df:label text="Published on" for="PublishedOn"/>
+    <df:label text="${bundle.PublishedOn}" for="PublishedOn"/>
     <df:field id="PublishedOn" type="calendar" colspan="1" rowspan="1"/>
   </df:row>
   <df:row>
-  	<df:label text="Language"/>
+  	<df:label text="${bundle.Language}"/>
 	<df:field id="Language" type="select" colspan="1" rowspan="1">
 		<df:selectItem>
 			<df:label>English</df:label>
@@ -36,11 +37,11 @@
 			<df:value>tr</df:value>
 		</df:selectItem>
 	</df:field>
-	<df:label text="Description"/>
+	<df:label text="${bundle.Description}"/>
     <df:field id="Description" type="textarea" colspan="1" rowspan="2"/>
   </df:row>
   <df:row>
-  	<df:label text="Rating"/>
+  	<df:label text="${bundle.Rating}"/>
     <df:field id="Rating" type="rating" colspan="1" rowspan="1"/>
   </df:row>
 </df:dynaform>

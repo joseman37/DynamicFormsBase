@@ -13,17 +13,17 @@
         
         <ui:define name="body">
             <h:form id="mainForm">
-                <p:panel toggleable="true" header="Acme Pools Navigation">
-                    <h:link outcome="/dynamicForm/form" value="Show All Forms"/>
+                <p:panel toggleable="true" header="#{bundle.Dashboard}">
+                    <h:link outcome="/dynamicForm/form" value="#{bundle.ShowForm}"/>
                     <br />
                     <p:panelGrid columns="2" >
-                        <p:outputLabel value="Select form:" for="forms"/>
+                        <p:outputLabel value="#{bundle.SelectForm}:" for="forms"/>
                         <p:selectOneMenu id="forms" value="#{dynaFormController.formName}" >
                             <f:selectItems value="#{dynamicFormRepository.formList}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
                     <br />
-                    <h:commandButton action="/dynamicForm/form" value="Go to form" />
+                    <h:commandButton action="/dynamicForm/form" value="#{bundle.GoToForm}" />
 
                 </p:panel>
             </h:form>

@@ -2,6 +2,7 @@ package mx.jmgs.dynamicformsbase.jsf;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,17 +24,45 @@ import mx.jmgs.dynamicformsbase.dyna.xml.DynamicForm;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+
 /**
  *
  * @author mgonzalez
  */
 @ManagedBean(name = "dynamicFormRepository")
 @ApplicationScoped
-public class DynamicFormRepository {
+public class DynamicFormRepository implements Serializable {
 
-    private static List<String> formList = null;
+    /**
+	 * helps Serialization
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static List<String> formList = null;
 
     private static Map<String, DynamicForm> forms = null;
+    
+    /**
+     * Freemarker Configuration object 
+     */
+ 	private Configuration cfg;
+ 	
+ 	/**
+ 	 * FreeMarker StringTemplateLoader. Used to load from strings objects not from files.
+ 	 */
+ 	StringTemplateLoader stringLoader;
+ 	
+ 	/**
+ 	 * Constructor
+ 	 */
+ 	public DynamicFormRepository() {
+ 		cfg = new Configuration();
+ 		stringLoader = new StringTemplateLoader();
+ 		cfg.setTemplateLoader(stringLoader);
+ 	}
 
     public List<String> getFormList() throws IOException {
         if (formList == null) {
@@ -73,7 +102,7 @@ public class DynamicFormRepository {
 
         //TODO validar esquema. Puede no ser necesario por que las clases JAXB bind corresponden al esquema.
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-	Schema schema = schemaFactory.newSchema(DynamicFormRepository.class
+        Schema schema = schemaFactory.newSchema(DynamicFormRepository.class
                 .getClassLoader().getResource("META-INF/forms.xsd"));
         jaxbUnmarshaller.setSchema(schema);
         
@@ -82,6 +111,21 @@ public class DynamicFormRepository {
         // DynamicForm form = (DynamicForm) jaxbUnmarshaller.unmarshal(is);      
 		DynamicForm form = ((JAXBElement<DynamicForm>)jaxbUnmarshaller.unmarshal(is)).getValue();
         return form;
+    }
+    
+    /**
+     * Retrieves a FreeMarker template to use for localization in the dynamic forms.
+     * @throws IOException 
+     */
+    public Template getTemplate(String templateStr) throws IOException {
+    	// Load the template
+    	stringLoader.putTemplate(templateStr, templateStr);
+    	//TODO obtener el cache del string loader y ver si es efectivo.
+    	//Use the whole template string as its name.
+    	Template template  = cfg.getTemplate(templateStr);
+    	
+		return template;
+    	
     }
 
 }

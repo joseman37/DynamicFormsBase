@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
@@ -18,15 +19,21 @@ public class LanguageBean implements Serializable {
 
 	private String localeCode;
 
-	private static Map<String, Object> countries;
+	private static Map<String, Object> languages;
+	
 	static {
-		countries = new LinkedHashMap<String, Object>();
-		countries.put("English", Locale.ENGLISH); // label, value
-		countries.put("Español", new Locale("es"));
+		languages = new LinkedHashMap<String, Object>();
+		languages.put("English", Locale.ENGLISH); // label, value
+		languages.put("Español", new Locale("es"));
+	}
+	
+	@PostConstruct
+	public void init() {
+		localeCode = FacesContext.getCurrentInstance().getViewRoot().getLocale().getDisplayName();
 	}
 
 	public Map<String, Object> getCountriesInMap() {
-		return countries;
+		return languages;
 	}
 
 	public String getLocaleCode() {
@@ -43,7 +50,7 @@ public class LanguageBean implements Serializable {
 		String newLocaleValue = e.getNewValue().toString();
 
 		// loop country map to compare the locale code
-		for (Map.Entry<String, Object> entry : countries.entrySet()) {
+		for (Map.Entry<String, Object> entry : languages.entrySet()) {
 
 			if (entry.getValue().toString().equals(newLocaleValue)) {
 

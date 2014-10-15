@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="bundle" type="{http://www.dynamicforms.mx/dynaform-1.0}bundle" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="row" type="{http://www.dynamicforms.mx/dynaform-1.0}row" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -39,12 +40,43 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name="dynaform")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dynaform", propOrder = {
+    "bundle",
     "row"
 })
 public class DynamicForm {
 
+    protected List<Bundle> bundle;
     @XmlElement(required = true)
     protected List<Row> row;
+
+    /**
+     * Gets the value of the bundle property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the bundle property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getBundle().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Bundle }
+     * 
+     * 
+     */
+    public List<Bundle> getBundles() {
+        if (bundle == null) {
+            bundle = new ArrayList<Bundle>();
+        }
+        return this.bundle;
+    }
 
     /**
      * Gets the value of the row property.

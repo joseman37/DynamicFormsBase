@@ -17,13 +17,22 @@
     <element name="dynaform" type="df:dynaform"/>
     
     <!--
-    A Dynaform XML instance must contain a list of rows
+    A Dynaform XML instance must contain a list of rows and a list of bundles
     -->
     <complexType name="dynaform">
     <sequence>
+    	<element name="bundle" type="df:bundle" minOccurs="0" maxOccurs="unbounded"/>
         <element name="row" type="df:row" minOccurs="1" maxOccurs="unbounded"/>
     </sequence>
     </complexType>
+    
+    <!--
+    A bundle contains a path
+    -->
+	<complexType name="bundle">
+        <attribute name="baseName" type="token"/>
+        <attribute name="var" type="token"/>
+	</complexType>
     
     <!--
     A row must contain a list of Form elements
