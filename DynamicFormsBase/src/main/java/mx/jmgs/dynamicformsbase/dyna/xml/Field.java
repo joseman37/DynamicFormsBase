@@ -30,11 +30,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent>
  *     &lt;extension base="{http://www.dynamicforms.mx/dynaform-1.0}formElement">
  *       &lt;sequence>
- *         &lt;element name="selectItem" type="{http://www.dynamicforms.mx/dynaform-1.0}selectItem" maxOccurs="unbounded"/>
+ *         &lt;element name="selectItem" type="{http://www.dynamicforms.mx/dynaform-1.0}selectItem" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="id" use="required" type="{http://www.w3.org/2001/XMLSchema}token" />
  *       &lt;attribute name="type" use="required" type="{http://www.dynamicforms.mx/dynaform-1.0}fieldType" />
  *       &lt;attribute name="required" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false" />
+ *       &lt;attribute name="placeholder" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -60,6 +61,8 @@ public class Field
     protected FieldType type;
     @XmlAttribute(name = "required")
     protected Boolean required;
+    @XmlAttribute(name = "placeholder")
+    protected String placeholder;
 
     /**
      * Gets the value of the selectItem property.
@@ -164,6 +167,30 @@ public class Field
      */
     public void setRequired(Boolean value) {
         this.required = value;
+    }
+
+    /**
+     * Gets the value of the placeholder property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    /**
+     * Sets the value of the placeholder property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPlaceholder(String value) {
+        this.placeholder = value;
     }
 
 }

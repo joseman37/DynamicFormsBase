@@ -14,7 +14,7 @@ import org.junit.Test;
 public class DynamicFormTest {
 
 	@Test
-	public void generateXmlSchemaFormJAXB() throws JAXBException, IOException {
+	public void generateXmlSchemaFromJAXB() throws JAXBException, IOException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(DynamicForm.class);
 		SchemaOutputResolver sor = new MySchemaOutputResolver();
 		jaxbContext.generateSchema(sor);

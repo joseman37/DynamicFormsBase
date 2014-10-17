@@ -24,6 +24,7 @@
                         <pe:dynaForm id="dynaForm" value="#{dynaFormController.model}" var="data">
                             <pe:dynaFormControl type="input" for="txt">
                                 <p:inputText id="txt" value="#{data.value}" required="#{data.required}"/>
+                                <p:watermark for="txt" value="#{data.placeholder}" />
                             </pe:dynaFormControl>
                             <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">
                                 <p:calendar id="cal" value="#{data.value}" required="#{data.required}" showOn="button"/>
@@ -56,7 +57,7 @@
 
                             <f:facet name="buttonBar">
                                 <p:commandButton value="#{bundle.Submit}" action="#{dynaFormController.submitForm}"
-                                                 process="dynaForm" update=":mainForm:dynaFormGroup :mainForm:inputValues"
+                                                 process="dynaForm" update=":mainForm:inputValues"
                                                  oncomplete="handleComplete(xhr, status, args)" />
                                 <p:commandButton type="reset" value="#{bundle.Reset}" style="margin-left: 5px;"/>
                             </f:facet>

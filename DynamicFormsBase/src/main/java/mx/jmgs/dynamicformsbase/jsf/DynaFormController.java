@@ -38,6 +38,7 @@ import mx.jmgs.dynamicformsbase.dyna.xml.FormElement;
 import mx.jmgs.dynamicformsbase.dyna.xml.FormSeparator;
 import mx.jmgs.dynamicformsbase.dyna.xml.Label;
 import mx.jmgs.dynamicformsbase.dyna.xml.Row;
+import mx.jmgs.dynamicformsbase.util.JsfUtil;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.model.dynaform.DynaFormControl;
@@ -68,14 +69,21 @@ public class DynaFormController implements Serializable {
     private DynaFormModel model;
 
     private String formName;
+    /**
+     * Used to identify if the locale has changed, if so, the dynamic form model should be updated.
+     */
+    private Locale lastLocale;
 
     public DynaFormController() {
-
+    	lastLocale = JsfUtil.getLocale();
     }
 
-    @SuppressWarnings("unchecked")
 	public DynaFormModel getModel() throws IOException {
-        //TODO revisar cuando cambia el lenguaje para restablecer el modelo
+    	//revisar cuando cambia el lenguaje para restablecer el modelo
+    	if(lastLocale != JsfUtil.getLocale()) {
+    		model = null;
+    	}
+        
     	if (model == null) {
             model = new DynaFormModel();
 
@@ -89,7 +97,7 @@ public class DynaFormController implements Serializable {
             // read bundles
             HashMap<String, Object> bundles = new HashMap<>();
             ResourceBundle rb = null;
-            Locale locale =  FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            Locale locale =  JsfUtil.getLocale();
             for(Bundle xmlBundle : form.getBundles()) {
             	rb = ResourceBundle.getBundle(xmlBundle.getBaseName(), locale);
             	bundles.put(xmlBundle.getVar(), rb);
@@ -107,7 +115,7 @@ public class DynaFormController implements Serializable {
                 	if(element instanceof Label) {
                 		Label control = (Label)element;
                 		//TODO see if we need to clone the data passed to the method getText().
-                		String text = getText(control.getText(), bundles);
+                		String text = processTemplateText(control.getText(), bundles);
                 		DynaFormLabel  label = row.addLabel(text, control.getColspan(), control.getRowspan());
                 		if(control.getFor()!= null) {
                 			queue.add(new LabelInfo(label, control.getFor()));
@@ -126,6 +134,10 @@ public class DynaFormController implements Serializable {
                                  items.add(new SelectItem(item.getValue(), item.getLabel()));
                              }
                              formField.setSelectItems(items);
+                         }
+                         if(field.getPlaceholder() != null) {
+	                         String placeholder = processTemplateText(field.getPlaceholder(), bundles);
+	                         formField.setPlaceholder(placeholder);
                          }
                        
                          //crete the field.
@@ -164,6 +176,9 @@ public class DynaFormController implements Serializable {
         FacesMessage.Severity sev = FacesContext.getCurrentInstance().getMaximumSeverity();
         boolean hasErrors = ((sev != null) && (FacesMessage.SEVERITY_ERROR.compareTo(sev) >= 0));
         RequestContext requestContext = RequestContext.getCurrentInstance();
+        //There's an args object available in the scope that will get this value through AJAX
+        // and JSON. In json use:
+        // args && args.isValid
         requestContext.addCallbackParam("isValid", !hasErrors);
         return null;
     }
@@ -174,7 +189,7 @@ public class DynaFormController implements Serializable {
      * @param data Data for the template. It will be clonned by this method.
      * @return
      */
-    public String getText(String templateStr, HashMap<String, Object> data) {
+    public String processTemplateText(String templateStr, HashMap<String, Object> data) {
 		try {
 			Template template = forms.getTemplate(templateStr);
 			

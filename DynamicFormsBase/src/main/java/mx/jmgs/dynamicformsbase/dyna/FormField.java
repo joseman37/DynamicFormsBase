@@ -16,6 +16,8 @@ public class FormField implements Serializable {
     private String name;
     private Object value;
     private boolean required;
+    private String placeholder;
+    
     /**
      * items para selects
      */
@@ -80,5 +82,21 @@ public class FormField implements Serializable {
     public void setSelectItems(List<SelectItem> selectItems) {
         this.selectItems = selectItems;
     }
+
+	/**
+	 * @return the placeholder
+	 */
+	public String getPlaceholder() {
+		return placeholder;
+	}
+
+	/**
+	 * @param placeholder the placeholder to set
+	 */
+	public void setPlaceholder(String placeholder) {
+		this.placeholder = placeholder;
+	}
+    
+    
     
 }

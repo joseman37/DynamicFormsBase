@@ -1,6 +1,8 @@
 package mx.jmgs.dynamicformsbase.util;
 
 import java.util.List;
+import java.util.Locale;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -59,6 +61,10 @@ public class JsfUtil {
     public static Object getObjectFromRequestParameter(String requestParameterName, Converter converter, UIComponent component) {
         String theId = JsfUtil.getRequestParameter(requestParameterName);
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
+    }
+    
+    public static Locale getLocale() {
+    	return FacesContext.getCurrentInstance().getViewRoot().getLocale();
     }
 
     public static enum PersistAction {

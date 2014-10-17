@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<df:dynaform xmlns:df="http://www.dynamicforms.mx/dynaform-1.0">
+  <df:bundle baseName="META-INF/bundles/forms/login" var="bundle"/>
+  <df:row>
+    <df:field id="username" type="input" colspan="1" rowspan="1" required="true"
+    placeholder="${bundle.username}"/>
+  </df:row>
+  <df:row>
+    <df:field id="password" type="input" colspan="1" rowspan="1" required="true"
+    placeholder="${bundle.password}"/>
+  </df:row>
+  
+</df:dynaform>

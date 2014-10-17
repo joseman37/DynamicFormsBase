@@ -3,9 +3,15 @@ package mx.jmgs.dynamicformsbase.jsf;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,10 +26,12 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import mx.jmgs.dynamicformsbase.dyna.xml.DynamicForm;
+import mx.jmgs.dynamicformsbase.struct.TemplateStat;
 
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
+import freemarker.cache.CacheStorage;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -53,7 +61,9 @@ public class DynamicFormRepository implements Serializable {
  	/**
  	 * FreeMarker StringTemplateLoader. Used to load from strings objects not from files.
  	 */
- 	StringTemplateLoader stringLoader;
+ 	private StringTemplateLoader stringLoader;
+ 	
+ 	private Set<String> templateNames;
  	
  	/**
  	 * Constructor
@@ -62,6 +72,10 @@ public class DynamicFormRepository implements Serializable {
  		cfg = new Configuration();
  		stringLoader = new StringTemplateLoader();
  		cfg.setTemplateLoader(stringLoader);
+ 		
+ 		//Cofigure Free Marker
+ 		cfg.setTemplateUpdateDelay(3600); // Disable cache reload
+ 		templateNames = new HashSet<>();
  	}
 
     public List<String> getFormList() throws IOException {
@@ -119,13 +133,30 @@ public class DynamicFormRepository implements Serializable {
      */
     public Template getTemplate(String templateStr) throws IOException {
     	// Load the template
-    	stringLoader.putTemplate(templateStr, templateStr);
-    	//TODO obtener el cache del string loader y ver si es efectivo.
+    	stringLoader.putTemplate(templateStr, templateStr, -1);
+    	// the next line could be used too.
+    	// stringLoader.putTemplate(templateStr, templateStr,-1);
+    	// so the cache reload is disabled, but it is already disabled in the constructor
+    	// if this class.
+    	
     	//Use the whole template string as its name.
     	Template template  = cfg.getTemplate(templateStr);
     	
+    	templateNames.add(templateStr);
+    	
 		return template;
     	
+    }
+    
+    public List<TemplateStat> getTemplateStatistics() {
+    	List<TemplateStat> stats = new ArrayList<>();
+    	for(String templateName : templateNames) {
+    		Object source = stringLoader.findTemplateSource(templateName);
+    		Calendar cal = Calendar.getInstance();
+    		cal.setTimeInMillis(stringLoader.getLastModified(source));
+    		stats.add(new TemplateStat(templateName, cal.getTime(), source.toString()));
+    	}
+    	return stats;
     }
 
 }

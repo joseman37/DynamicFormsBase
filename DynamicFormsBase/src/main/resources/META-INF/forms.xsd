@@ -90,6 +90,7 @@
 				<attribute name="id" type="token" use="required" />
 				<attribute name="type" type="df:fieldType" use="required" />
 				<attribute name="required" type="boolean" default="false" />
+				<attribute name="placeholder" type="string" />
 			</extension>
 		</complexContent>
 	</complexType>
