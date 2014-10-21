@@ -2,12 +2,12 @@
 <df:dynaform xmlns:df="http://www.dynamicforms.mx/dynaform-1.0">
   <df:bundle baseName="META-INF/bundles/forms/login" var="bundle"/>
   <df:row>
-    <df:field id="username" type="input" colspan="1" rowspan="1" required="true"
+    <df:input id="username" colspan="1" rowspan="1" required="true" label="${bundle.username}"
     placeholder="${bundle.username}"/>
   </df:row>
   <df:row>
-    <df:field id="password" type="input" colspan="1" rowspan="1" required="true"
-    placeholder="${bundle.password}"/>
+    <df:input id="password" type="password" colspan="1" rowspan="1" required="true"
+    placeholder="${bundle.password}" label="${bundle.password}"/>
   </df:row>
   
 </df:dynaform>

@@ -1,5 +1,8 @@
 package mx.jmgs.dynamicformsbase.util;
 
+import java.beans.Introspector;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
@@ -8,6 +11,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+
+import mx.jmgs.dynamicformsbase.dyna.xml.Field;
 
 public class JsfUtil {
 
@@ -65,6 +70,30 @@ public class JsfUtil {
     
     public static Locale getLocale() {
     	return FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    }
+    
+    @SuppressWarnings("unchecked")
+    /**
+     * Method that takes a bean field of an object or interface given the field's type.
+     * @param obj
+     * @param getterName
+     * @return
+     * @throws SecurityException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
+	public static <T> T callBeanGetter(Object obj,  String getterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, IllegalArgumentException {
+    	Class<? extends Object> aClass = obj.getClass();
+    	
+    	//OBJECT FIELDS
+    	//java.lang.reflect.Field field = aClass.getDeclaredField(getterName);
+    	//Object value = field.get(obj);
+    	
+    	//METHOD
+    	Method method = aClass.getMethod(getterName);
+        Object value = method.invoke(obj, (Object[]) null);
+    	
+    	return (T)value;
     }
 
     public static enum PersistAction {

@@ -19,11 +19,11 @@
                 <p:panel header="#{bundle.DynamicForm}">
                     
                     <h:panelGroup id="dynaFormGroup">
-                        <p:messages id="messages" showSummary="true"/>
+                        <p:messages id="messages" showSummary="true" severity="error"/>
 
-                        <pe:dynaForm id="dynaForm" value="#{dynaFormController.model}" var="data">
+                        <pe:dynaForm id="dynaForm" value="#{dynaFormController.model}" var="data" openExtended="true">
                             <pe:dynaFormControl type="input" for="txt">
-                                <p:inputText id="txt" value="#{data.value}" required="#{data.required}"/>
+                                <p:inputText id="txt" label="#{data.label}" value="#{data.value}" type="#{data.type}" required="#{data.required}"/>
                                 <p:watermark for="txt" value="#{data.placeholder}" />
                             </pe:dynaFormControl>
                             <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">
@@ -57,7 +57,7 @@
 
                             <f:facet name="buttonBar">
                                 <p:commandButton value="#{bundle.Submit}" action="#{dynaFormController.submitForm}"
-                                                 process="dynaForm" update=":mainForm:inputValues :mainForm:messages"
+                                                 process="dynaForm" update=":mainForm:dynaFormGroup, :mainForm:inputValues, :growl"
                                                  oncomplete="handleComplete(xhr, status, args)" />
                                 <p:commandButton type="reset" value="#{bundle.Reset}" style="margin-left: 5px;"/>
                             </f:facet>

@@ -49,9 +49,9 @@ public class DynamicFormRepository implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static List<String> formList = null;
+	private List<String> formList = null;
 
-    private static Map<String, DynamicForm> forms = null;
+    private Map<String, DynamicForm> forms = null;
     
     /**
      * Freemarker Configuration object 
@@ -123,7 +123,9 @@ public class DynamicFormRepository implements Serializable {
         // this will create Java object - DynamicForm from the XML file
         // Since the xsd have more than one root element we must use JAXBElement instead of:
         // DynamicForm form = (DynamicForm) jaxbUnmarshaller.unmarshal(is);      
-		DynamicForm form = ((JAXBElement<DynamicForm>)jaxbUnmarshaller.unmarshal(is)).getValue();
+		// DynamicForm form = ((JAXBElement<DynamicForm>)jaxbUnmarshaller.unmarshal(is)).getValue();
+        
+        DynamicForm form = (DynamicForm) jaxbUnmarshaller.unmarshal(is);
         return form;
     }
     

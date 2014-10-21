@@ -39,15 +39,26 @@
     -->
     <complexType name="row">
     <sequence>
-        <element ref="df:formElement" minOccurs="1" maxOccurs="unbounded"/>
+		<!-- Permit any of these tags in any order in any number -->
+		<choice minOccurs="1" maxOccurs="unbounded">
+			<element name="label" type="df:label" />
+			<element name="separator" type="df:separator" />
+			<element name="input" type="df:input" />
+			<element name="calendar" type="df:calendar" />
+			<element name="textarea" type="df:textarea" />
+			<element name="rating" type="df:rating" />
+			<element name="booleanchoice" type="df:booleanchoice" />
+			<element name="select" type="df:select" />
+			<element name="radiochoice" type="df:radiochoice" />
+		</choice>
     </sequence>
     </complexType>
 
 	<!--
-    Abstract Form Element for replacement via substitution.
+    Abstract Form Element.
     -->
-    <element name="formElement" type="df:formElement" abstract="true" />
-	<complexType name="formElement">
+    <!-- <element name="formElement" type="df:formElement" abstract="true" /> -->
+	<complexType name="formElement" abstract="true">
         <attribute name="colspan" type="unsignedShort" default="1"/>
         <attribute name="rowspan" type="unsignedShort" default="1"/>
 	</complexType>
@@ -55,7 +66,6 @@
 	<!--
     Label is a formElement instance
     -->
-    <element name="label" type="df:label" substitutionGroup="df:formElement"/>
 	<complexType name="label">
 		<complexContent>
 			<extension base="df:formElement">
@@ -68,7 +78,6 @@
 	<!--
     Label is a formElement instance
     -->
-    <element name="separator" type="df:separator" substitutionGroup="df:formElement"/>
 	<complexType name="separator">
 		<complexContent>
 			<extension base="df:formElement">
@@ -78,37 +87,116 @@
 	</complexType>
     
     <!--
-    A field contains: required attribute, id, type, colspan, rowspan and a list of select items
+    Abstract field element.
     -->
-    <element name="field" type="df:field" substitutionGroup="df:formElement"/>
-	<complexType name="field">
+	<complexType name="field" abstract="true">
 		<complexContent>
 			<extension base="df:formElement">
-				<sequence>
-					<element name="selectItem" type="df:selectItem" minOccurs="0" maxOccurs="unbounded" />
-				</sequence>
 				<attribute name="id" type="token" use="required" />
-				<attribute name="type" type="df:fieldType" use="required" />
 				<attribute name="required" type="boolean" default="false" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    Input element.
+    -->
+	<complexType name="input">
+		<complexContent>
+			<extension base="df:field">
+				<attribute name="type" type="df:inputType" />
+				<attribute name="label" type="string" />
+				<attribute name="placeholder" type="string" />
+				<attribute name="min" type="int" />
+				<attribute name="max" type="int" />
+				<attribute name="minLength" type="int" />
+				<attribute name="maxlength" type="int" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    Dyna form inputType
+    HTML5 Input Types
+    -->
+    <simpleType name="inputType">
+        <restriction base="token">
+            <enumeration value="number"/>            
+            <enumeration value="text"/>            
+            <enumeration value="range"/>
+            <enumeration value="email"/>
+            <enumeration value="password"/>
+        </restriction>
+    </simpleType>
+	
+	<!--
+    Calendar element.
+    -->
+	<complexType name="calendar">
+		<complexContent>
+			<extension base="df:field">
+				<attribute name="label" type="string" />
 				<attribute name="placeholder" type="string" />
 			</extension>
 		</complexContent>
 	</complexType>
-    
-    <!--
-    Dyna form FieldType
+	
+	<!--
+    Textarea element.
     -->
-    <simpleType name="fieldType">
-        <restriction base="token">
-            <enumeration value="input"/>            
-            <enumeration value="calendar"/>            
-            <enumeration value="select"/>            
-            <enumeration value="textarea"/>            
-            <enumeration value="rating"/>       
-            <enumeration value="radiochoice"/>
-            <enumeration value="booleanchoice"/>    
-        </restriction>
-    </simpleType>
+	<complexType name="textarea">
+		<complexContent>
+			<extension base="df:field">
+				<attribute name="label" type="string" />
+				<attribute name="placeholder" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    rating element.
+    -->
+	<complexType name="rating">
+		<complexContent>
+			<extension base="df:field">
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    booleanchoice element.
+    -->
+	<complexType name="booleanchoice">
+		<complexContent>
+			<extension base="df:field">
+				<attribute name="label" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    Select element.
+    -->
+	<complexType name="select">
+		<complexContent>
+			<extension base="df:field">
+				<sequence>
+					<element name="selectItem" type="df:selectItem" minOccurs="0" maxOccurs="unbounded" />
+				</sequence>
+				<attribute name="label" type="string" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    radiochoice element.
+    -->
+	<complexType name="radiochoice">
+		<complexContent>
+			<extension base="df:select">
+			</extension>
+		</complexContent>
+	</complexType>
     
     <!--
     SelectItems contains value and label

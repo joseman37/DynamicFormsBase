@@ -5,16 +5,16 @@
 		<df:label text="Street" />
 	</df:row>
 	<df:row>
-		<df:field id="ShortName" type="input" required="true" />
-		<df:field id="Street" type="input" colspan="2" />
+		<df:input id="ShortName" required="true" />
+		<df:input id="Street" colspan="2" />
 	</df:row>
 	<df:row>
 		<df:label text="Long Name" for="LongName" />
 		<df:label text="Zip Code, City" />
 	</df:row>
 	<df:row>
-		<df:field id="LongName" type="input" required="true" />
-		<df:field id="ZipCity" type="input" colspan="2" />
+		<df:input id="LongName" required="true" />
+		<df:input id="ZipCity" colspan="2" />
 	</df:row>
 	<df:row>
 		<df:separator text="MakeChoice" colspan="3" />
@@ -25,7 +25,7 @@
 		<df:label text="Children" />
 	</df:row>
 	<df:row>
-		<df:field id="fan" type="radiochoice">
+		<df:radiochoice id="fan">
 			<df:selectItem>
 				<df:label>Sure</df:label>
 				<df:value>Sure</df:value>
@@ -34,9 +34,9 @@
 				<df:label>Don't know</df:label>
 				<df:value>Don't know</df:value>
 			</df:selectItem>
-		</df:field>
-		<df:field id="Married" type="booleanchoice" />
-		<df:field id="Children" type="radiochoice">
+		</df:radiochoice>
+		<df:booleanchoice id="Married" />
+		<df:radiochoice id="Children">
 			<df:selectItem>
 				<df:label>No</df:label>
 				<df:value>No</df:value>
@@ -53,6 +53,6 @@
 				<df:label>More</df:label>
 				<df:value>More</df:value>
 			</df:selectItem>
-		</df:field>
+		</df:radiochoice>
 	</df:row>
 </df:dynaform>
