@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+ 
+    <ui:composition>
+ 
+        <ul class="nav nav-sidebar">
+	        <ui:repeat value="#{menu.pages}" var="page">
+			    <li class="#{view.viewId == page.viewId ? 'active' : ''}">
+			        <h:link value="#{bundle[page.title]}" outcome="#{page.viewId}" />
+			    </li>
+			</ui:repeat>
+        </ul>
+        <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+        </ul>        
+    </ui:composition>
+</html>

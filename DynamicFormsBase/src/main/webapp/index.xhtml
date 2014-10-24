@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     
-    <ui:composition template="/template.xhtml">
+    <ui:composition template="/template/templateBT.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.AppName}"></h:outputText>
         </ui:define>
@@ -23,13 +23,21 @@
                         </p:selectOneMenu>
                     </p:panelGrid>
                     <br />
-                    <h:commandButton action="/dynamicForm/form" value="#{bundle.GoToForm}" />
+                    <p:commandButton action="/dynamicForm/form" value="#{bundle.GoToForm}" />
 
                 </p:panel>
             </h:form>
-            
-            
-        </ui:define>
+		<h:form id="themeForm" class="navbar-form navbar-right">
+			<p:themeSwitcher id="advanced" style="width:165px" effect="fade">
+				<f:selectItem itemLabel="#{bundle.Theme}" itemValue="none" />
+				<f:selectItems value="#{themeService.themes}" var="theme"
+					itemLabel="#{theme.displayName}" itemValue="#{theme.name}" />
+				<p:ajax listener="#{loggedInUser.saveTheme}" />
+			</p:themeSwitcher>
+		</h:form>
+
+
+	</ui:define>
         
     </ui:composition>
     

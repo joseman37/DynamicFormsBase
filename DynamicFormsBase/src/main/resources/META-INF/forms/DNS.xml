@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<df:dynaform xmlns:df="http://www.dynamicforms.mx/dynaform-1.0">
+	<df:bundle baseName="META-INF/bundles/forms/dns" var="bundle"/>
+	<df:row>
+		<df:label text="${bundle.zone}" for="zone" />
+		<df:input id="zone" type="text" required="true" />
+	</df:row>
+	<df:row>
+		<df:label text="${bundle.serial}" for="serial" />
+		<df:input id="serial" type="number" required="true" />
+	</df:row>
+	<df:row>
+		<df:label text="${bundle.retry}" for="retry" />
+		<df:input id="retry" type="number" required="true" />
+	</df:row>
+	<df:row>
+		<df:label text="${bundle.refresh}" for="refresh" />
+		<df:input id="refresh" type="number" required="true" />
+	</df:row>
+	<df:row>
+		<df:label text="${bundle.expire}" for="expire" />
+		<df:input id="expire" type="number" required="true" />
+	</df:row>
+	<df:row>
+		<df:label text="${bundle.minTTL}" for="minTTL" />
+		<df:input id="minTTL" type="number" required="true" />
+	</df:row>
+	<df:row>
+		<df:separator text="NS" colspan="2"/>
+	</df:row>
+	<df:row>
+		<df:textarea id="ns" label="NS" colspan="2"/>
+	</df:row>
+	
+	
+</df:dynaform>

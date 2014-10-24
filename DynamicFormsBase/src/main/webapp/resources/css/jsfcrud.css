@@ -1,4 +1,4 @@
-
+/**
 .ui-widget {
     font-size: 12px !important;
 }
@@ -16,4 +16,8 @@
 .ui-widget-header {
     text-align: center;
     text-transform: uppercase;
+}
+*/
+.ui-selectonemenu label.ui-selectonemenu-label{
+   width:100% !important;
 }

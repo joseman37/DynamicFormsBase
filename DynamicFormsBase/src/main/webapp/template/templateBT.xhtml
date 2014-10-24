@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pa="http://xmlns.jcp.org/jsf/passthrough">
+
+<f:view locale="#{language.localeCode}">
+
+    <h:head>
+    	
+    	<f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />		
+ 
+            <title><ui:insert name="title">Default Title</ui:insert></title>
+        </f:facet>
+ 
+        <f:facet name="middle">
+            <!-- JQuery bundled in primefaces. Instead of -->
+	        <!-- <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script> -->
+	        <!-- Or -->
+	        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" /> -->
+	        <h:outputScript name="primefaces/jquery/jquery.js" />
+            
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css"/>
+            <h:outputScript name="bootstrap/js/bootstrap.js" />
+            
+            <!-- Custom styles for this template -->
+            <h:outputStylesheet name="css/dashboard.css" />
+            <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        	<h:outputScript library="js" name="jsfcrud.js"/>
+        </f:facet>
+        
+        <f:facet name="last">
+        	
+        </f:facet>
+  
+    </h:head>
+
+    <h:body>    
+    
+        <ui:include src="header.xhtml" />
+        <ui:include src="content.xhtml" />  
+	    
+    </h:body>
+
+</f:view>
+
+</html>
