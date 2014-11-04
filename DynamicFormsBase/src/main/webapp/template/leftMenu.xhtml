@@ -7,14 +7,25 @@
         <ul class="nav nav-sidebar">
 	        <ui:repeat value="#{menu.pages}" var="page">
 			    <li class="#{view.viewId == page.viewId ? 'active' : ''}">
-			        <h:link value="#{bundle[page.title]}" outcome="#{page.viewId}" />
+			        <h:link value="#{bundle[page.title]}" outcome="#{page.viewId}" >
+			        	<h:panelGroup styleClass="#{page.icon}" render="#{page.icon != null}"
+			        	style="float: right;"/>
+			        </h:link>
 			    </li>
 			</ui:repeat>
         </ul>
         <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
+        	<ui:repeat value="#{dynamicFormRepository.formList}" var="form">
+			    <li><a href="#{request.contextPath}/dynamicForm/form/#{form}">#{form}</a>
+			    </li>
+			</ui:repeat>
+        </ul>
+        
+        <ul class="nav nav-sidebar">
+        	<li><a href="">Nav item again</a></li>
             <li><a href="">One more nav</a></li>
             <li><a href="">Another nav item</a></li>
-        </ul>        
+        </ul>
+                
     </ui:composition>
 </html>

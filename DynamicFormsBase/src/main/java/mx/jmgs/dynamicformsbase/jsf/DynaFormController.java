@@ -6,7 +6,6 @@
 package mx.jmgs.dynamicformsbase.jsf;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 
 import mx.jmgs.dynamicformsbase.dyna.FormField;
@@ -22,14 +21,13 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.ResourceBundle;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlType;
 
 import mx.jmgs.dynamicformsbase.dyna.xml.Bundle;
@@ -40,9 +38,8 @@ import mx.jmgs.dynamicformsbase.dyna.xml.FormElement;
 import mx.jmgs.dynamicformsbase.dyna.xml.FormSeparator;
 import mx.jmgs.dynamicformsbase.dyna.xml.InputType;
 import mx.jmgs.dynamicformsbase.dyna.xml.Label;
-import mx.jmgs.dynamicformsbase.dyna.xml.Radiochoice;
 import mx.jmgs.dynamicformsbase.dyna.xml.Row;
-import mx.jmgs.dynamicformsbase.dyna.xml.Select;
+import mx.jmgs.dynamicformsbase.singleton.JsfConfiguration;
 import mx.jmgs.dynamicformsbase.util.JsfUtil;
 
 import org.primefaces.context.RequestContext;
@@ -51,14 +48,11 @@ import org.primefaces.extensions.model.dynaform.DynaFormLabel;
 import org.primefaces.extensions.model.dynaform.DynaFormModel;
 import org.primefaces.extensions.model.dynaform.DynaFormRow;
 
-import freemarker.cache.StringTemplateLoader;
-import freemarker.ext.beans.ResourceBundleModel;
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 @ManagedBean
-@SessionScoped // TODO cambiarlo a viewScoped. Utilizar request parameter para especificar el form name.
+@ViewScoped
 public class DynaFormController implements Serializable {
 
 	/**
@@ -73,6 +67,7 @@ public class DynaFormController implements Serializable {
 
     private DynaFormModel model;
 
+    // Utilizar request parameter para especificar el form name.
     private String formName;
     /**
      * Used to identify if the locale has changed, if so, the dynamic form model should be updated.
@@ -81,9 +76,23 @@ public class DynaFormController implements Serializable {
 
     public DynaFormController() {
     	lastLocale = JsfUtil.getLocale();
+    	//TODO
+    	System.out.println("Creating DynaFormController bean in view scope");
     }
 
 	public DynaFormModel getModel() throws IOException {
+		// Utilizar request parameter para especificar el form name.
+		if(formName == null) {
+			String formNameAtr = JsfUtil.getRequestAttribute("formName");
+			System.out.println("Request Atribute:" + formNameAtr);
+			if (formNameAtr == null) {
+				// redirect to index.
+				JsfUtil.redirect(JsfConfiguration.INDEX_URL);
+				return null;
+			}
+			formName = formNameAtr;
+		}
+		
     	//revisar cuando cambia el lenguaje para restablecer el modelo
     	if(lastLocale != JsfUtil.getLocale()) {
     		model = null;

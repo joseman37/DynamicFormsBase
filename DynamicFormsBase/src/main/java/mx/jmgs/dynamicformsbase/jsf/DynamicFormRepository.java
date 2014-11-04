@@ -15,6 +15,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.xml.XMLConstants;
@@ -49,33 +50,38 @@ public class DynamicFormRepository implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private List<String> formList = null;
+	private static List<String> formList = null;
 
-    private Map<String, DynamicForm> forms = null;
-    
-    /**
+    private static Map<String, DynamicForm> forms = null;
+	
+	/**
      * Freemarker Configuration object 
      */
- 	private Configuration cfg;
+ 	private static Configuration cfg;
  	
  	/**
  	 * FreeMarker StringTemplateLoader. Used to load from strings objects not from files.
  	 */
- 	private StringTemplateLoader stringLoader;
+ 	private static StringTemplateLoader stringLoader;
  	
- 	private Set<String> templateNames;
- 	
- 	/**
- 	 * Constructor
- 	 */
- 	public DynamicFormRepository() {
- 		cfg = new Configuration();
+ 	private static Set<String> templateNames;
+
+    
+    static {
+    	cfg = new Configuration();
  		stringLoader = new StringTemplateLoader();
  		cfg.setTemplateLoader(stringLoader);
  		
  		//Cofigure Free Marker
  		cfg.setTemplateUpdateDelay(3600); // Disable cache reload
  		templateNames = new HashSet<>();
+    }
+ 	
+ 	/**
+ 	 * Constructor
+ 	 */
+ 	public DynamicFormRepository() {
+ 		
  	}
 
     public List<String> getFormList() throws IOException {

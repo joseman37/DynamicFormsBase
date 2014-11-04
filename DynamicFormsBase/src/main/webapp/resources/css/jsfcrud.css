@@ -17,7 +17,12 @@
     text-align: center;
     text-transform: uppercase;
 }
-*/
+
 .ui-selectonemenu label.ui-selectonemenu-label{
    width:100% !important;
+}
+*/
+
+.ui-selectonemenu .ui-selectonemenu-trigger {
+	width: auto !important;
 }

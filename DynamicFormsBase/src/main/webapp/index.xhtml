@@ -12,21 +12,23 @@
         </ui:define>
         
         <ui:define name="body">
-            <h:form id="mainForm">
-                <p:panel toggleable="true" header="#{bundle.Dashboard}">
-                    <h:link outcome="/dynamicForm/form" value="#{bundle.ShowForm}"/>
-                    <br />
-                    <p:panelGrid columns="2" >
-                        <p:outputLabel value="#{bundle.SelectForm}:" for="forms"/>
-                        <p:selectOneMenu id="forms" value="#{dynaFormController.formName}" >
-                            <f:selectItems value="#{dynamicFormRepository.formList}"/>
-                        </p:selectOneMenu>
-                    </p:panelGrid>
-                    <br />
-                    <p:commandButton action="/dynamicForm/form" value="#{bundle.GoToForm}" />
+        <h:form id="mainForm">
+            <p:panel toggleable="true" header="#{bundle.Dashboard}">
+                <!--
+                <h:link outcome="/dynamicForm/form" value="#{bundle.ShowForm}"/>
+                <br /> 
+                <p:panelGrid columns="2" >
+                    <p:outputLabel value="#{bundle.SelectForm}:" for="forms"/>
+                    <p:selectOneMenu id="forms" value="#{dynaFormController.formName}" >
+                        <f:selectItems value="#{dynamicFormRepository.formList}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <br />
+                <p:commandButton action="/dynamicForm/form" value="#{bundle.GoToForm}" />
+                -->
 
-                </p:panel>
-            </h:form>
+            </p:panel>
+        </h:form>
 		<h:form id="themeForm" class="navbar-form navbar-right">
 			<p:themeSwitcher id="advanced" style="width:165px" effect="fade">
 				<f:selectItem itemLabel="#{bundle.Theme}" itemValue="none" />

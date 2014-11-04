@@ -17,9 +17,9 @@ public class MenuBean implements Serializable {
 	
 	public MenuBean() {
 		pages = new ArrayList<>();
-		pages.add(new Page("/index.xhtml", "Home"));
+		pages.add(new Page("/index.xhtml", "Home", "glyphicon glyphicon-home"));
 		pages.add(new Page("/dynamicForm/form.xhtml", "DynamicForm"));
-		pages.add(new Page("/dynamicForm/statistics.xhtml", "Statistics"));
+		pages.add(new Page("/dynamicForm/statistics.xhtml", "Statistics", "glyphicon glyphicon-star"));
 	}
 
 	public List<Page> getPages() {
@@ -30,10 +30,17 @@ public class MenuBean implements Serializable {
 		
 		private String viewId;
 		private String title;
+		private String icon;
 		
 		public Page(String viewId, String title) {
 			this.title = title;
 			this.viewId = viewId;
+		}
+		
+		public Page(String viewId, String title, String icon) {
+			this.title = title;
+			this.viewId = viewId;
+			this.icon = icon;
 		}
 
 		/**
@@ -62,6 +69,20 @@ public class MenuBean implements Serializable {
 		 */
 		public void setTitle(String title) {
 			this.title = title;
+		}
+
+		/**
+		 * @return the icon
+		 */
+		public String getIcon() {
+			return icon;
+		}
+
+		/**
+		 * @param icon the icon to set
+		 */
+		public void setIcon(String icon) {
+			this.icon = icon;
 		}
 		
 		

@@ -1,6 +1,6 @@
 package mx.jmgs.dynamicformsbase.util;
 
-import java.beans.Introspector;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -11,8 +11,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
-import mx.jmgs.dynamicformsbase.dyna.xml.Field;
+import mx.jmgs.dynamicformsbase.singleton.JsfConfiguration;
+
 
 public class JsfUtil {
 
@@ -70,6 +73,50 @@ public class JsfUtil {
     
     public static Locale getLocale() {
     	return FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    }
+    
+    public static void fordward(String url) {
+    	FacesContext.getCurrentInstance().responseComplete();
+    	if(!url.startsWith("/")) {
+			throw new RuntimeException("invalid relative url, it should start with /");
+		}
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().dispatch(url);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
+    public static void redirect(String url) {
+    	redirect(url, true);
+    }
+    
+    public static void redirect(String url, boolean relative) {
+    	FacesContext.getCurrentInstance().responseComplete();
+    	if(relative){
+    		if(!url.startsWith("/")) {
+    			throw new RuntimeException("invalid relative url, it should start with /");
+    		}
+    		//TODO
+    		String contextPath = FacesContext.getCurrentInstance().getExternalContext().getContextName();
+    		System.out.println("Context path:" + contextPath);
+    		
+    		contextPath = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getContextPath();
+    		System.out.println("Context path 2:" + contextPath);
+    		url = contextPath + url;
+    	}
+    	
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect(url);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static <T>T getRequestAttribute(String attribute) {
+    	HttpServletRequest req =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+    	return (T)req.getAttribute(attribute);
     }
     
     @SuppressWarnings("unchecked")
