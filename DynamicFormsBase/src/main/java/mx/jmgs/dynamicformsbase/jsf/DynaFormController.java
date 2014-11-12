@@ -35,7 +35,6 @@ import mx.jmgs.dynamicformsbase.dyna.xml.Field;
 import mx.jmgs.dynamicformsbase.dyna.xml.FieldSelectItem;
 import mx.jmgs.dynamicformsbase.dyna.xml.FormElement;
 import mx.jmgs.dynamicformsbase.dyna.xml.FormSeparator;
-import mx.jmgs.dynamicformsbase.dyna.xml.InputType;
 import mx.jmgs.dynamicformsbase.dyna.xml.Label;
 import mx.jmgs.dynamicformsbase.dyna.xml.Output;
 import mx.jmgs.dynamicformsbase.dyna.xml.Row;
@@ -194,9 +193,9 @@ public class DynaFormController implements Serializable {
 							
 							// Get the field's min
 							try {
-								Integer num = JsfUtil.callBeanGetter(field, "getMin");
+								Integer num = JsfUtil.callBeanGetter(field, "getMinValue");
 								if(num != null) {
-			                        formField.setMin(num);
+			                        formField.setMinValue(num);
 		                        }
 							} catch(NoSuchMethodException e) {
 								// continue
@@ -204,9 +203,9 @@ public class DynaFormController implements Serializable {
 							
 							// Get the field's max
 							try {
-								Integer num = JsfUtil.callBeanGetter(field, "getMax");
+								Integer num = JsfUtil.callBeanGetter(field, "getMaxValue");
 								if(num != null) {
-			                        formField.setMax(num);
+			                        formField.setMaxValue(num);
 		                        }
 							} catch(NoSuchMethodException e) {
 								// continue
@@ -232,15 +231,6 @@ public class DynaFormController implements Serializable {
 								// continue
 							}
 							
-							// Get the input type
-							try {
-								InputType type = JsfUtil.callBeanGetter(field, "getType");
-								if(type != null) {
-			                        formField.setInputType(type.value());
-		                        }
-							} catch(NoSuchMethodException e) {
-								// continue
-							}
 						} catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
 							throw new RuntimeException("Error while processing dynamic form",e);
 						}
@@ -277,8 +267,22 @@ public class DynaFormController implements Serializable {
 			if (dynaFormControl.getData() instanceof FormField) {
 				FormField control = (FormField) dynaFormControl.getData();
 				if(control.getName() != null) {
+					//TODO validar desde el server lo campos min, max, maxLength, minLength
 					formFields.add(control);
 				}
+			}
+		}
+        return formFields;
+    }
+    
+    public List<FormField> getDynaFormControls() {
+        if (model == null) {
+            return null;
+        }
+        List<FormField> formFields = new ArrayList<FormField>();
+		for (DynaFormControl dynaFormControl : model.getControls()) {
+			if (dynaFormControl.getData() instanceof FormField) {
+				formFields.add((FormField) dynaFormControl.getData());
 			}
 		}
         return formFields;

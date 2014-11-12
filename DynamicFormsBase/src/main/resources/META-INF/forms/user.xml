@@ -6,7 +6,7 @@
 	</df:row>
 	<df:row>
 		<df:input id="ShortName" required="true" label="Short Name"/>
-		<df:input id="Street" colspan="2" />
+		<df:input id="Street" colspan="2" minLength="2"/>
 	</df:row>
 	<df:row>
 		<df:output text="Long Name"/>

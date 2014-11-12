@@ -23,37 +23,64 @@
 
                         <pe:dynaForm id="dynaForm" value="#{dynaFormController.model}" var="data" openExtended="true">
                             <pe:dynaFormControl type="input" for="txt">
-                                <p:inputText id="txt" label="#{data.label}" value="#{data.value}" 
-                                type="#{data.inputType}" required="#{data.required}"/>
-                                <p:watermark for="txt" value="#{data.placeholder}" />
+                                <p:inputText id="txt" value="#{data.value}" required="#{data.required}"
+                                label="#{data.label}" >
+                                	<f:passThroughAttribute name="maxlength" value="#{data.maxLength}"/>
+                                	<f:passThroughAttribute name="minlength" value="#{data.minLength}"/>
+                                	<f:passThroughAttribute name="placeholder" value="#{data.placeholder}"/>
+                                </p:inputText>
                             </pe:dynaFormControl>
+                            
+                            <pe:dynaFormControl type="inputNumber" for="num">
+                            	<p:spinner id="num" value="#{data.value}" required="#{data.required}" 
+                            	label="#{data.label}">  
+                                	<f:passThroughAttribute name="placeholder" value="#{data.placeholder}"/>
+                                </p:spinner>
+                            </pe:dynaFormControl>
+                            
+                            <pe:dynaFormControl type="password" for="pas">
+                                <p:password id="pas" value="#{data.value}" required="#{data.required}"
+                                label="#{data.label}" >
+                                	<f:passThroughAttribute name="maxlength" value="#{data.maxLength}"/>
+                                	<f:passThroughAttribute name="minlength" value="#{data.minLength}"/>
+                                	<f:passThroughAttribute name="placeholder" value="#{data.placeholder}"/>
+                                </p:password>
+                            </pe:dynaFormControl>
+                            
                             <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">
                                 <p:calendar id="cal" value="#{data.value}" required="#{data.required}" showOn="button"/>
                             </pe:dynaFormControl>
+                            
                             <pe:dynaFormControl type="select" for="sel" styleClass="select">
                                 <p:selectOneMenu id="sel" value="#{data.value}" required="#{data.required}">
                                     <f:selectItems value="#{data.selectItems}"/>
                                 </p:selectOneMenu>
                             </pe:dynaFormControl>
+                            
                             <pe:dynaFormControl type="textarea" for="tarea">
                                 <p:inputTextarea id="tarea" value="#{data.value}" required="#{data.required}" autoResize="false"/>
                             </pe:dynaFormControl>
+                            
                             <pe:dynaFormControl type="rating" for="rat">
                                 <p:rating id="rat" value="#{data.value}" required="#{data.required}"/>
                             </pe:dynaFormControl>
+                            
                             <pe:dynaFormControl type="separator" styleClass="separator ui-state-disabled">  
                                 <h:panelGrid columns="2" style="width:100%;" columnClasses="separatorText">
                                 	<h:outputText value="#{data.label}"/>  
                                     <p:separator/>  
                                 </h:panelGrid>  
                             </pe:dynaFormControl>
+                            
                             <pe:dynaFormControl type="output" styleClass="df-label df-left pe-dynaform-label" >
                         		<h:outputText value="#{data.label}"/>
                             </pe:dynaFormControl>  
+                            
                             <pe:dynaFormControl type="booleanchoice" for="bool">  
                                 <p:selectBooleanCheckbox id="bool" value="#{data.value}" required="#{data.required}"  
                                                          style="vertical-align:middle;"/>  
-                            </pe:dynaFormControl>  
+                            </pe:dynaFormControl>
+                              
                             <pe:dynaFormControl type="radiochoice" for="rad">  
                                 <p:selectOneRadio  id="rad" value="#{data.value}" required="#{data.required}">  
                                     <f:selectItems value="#{data.selectItems}"/>  
@@ -96,7 +123,8 @@
 
 			<script type="text/javascript">
          	//<![CDATA[
-         	    $function() {
+         	    $(function() {
+         	    	//TODO usar jQuery o passThroughAttribute
          	    	if(#{data.maxLength ne null}) {
          	    		PF('txtInput').attr('maxlength', '#{data.maxLength}');
          	    	}

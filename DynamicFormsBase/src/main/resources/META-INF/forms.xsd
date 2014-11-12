@@ -45,6 +45,8 @@
 			<element name="output" type="df:output" />
 			<element name="separator" type="df:separator" />
 			<element name="input" type="df:input" />
+			<element name="inputNumber" type="df:inputNumber" />
+			<element name="password" type="df:password" />
 			<element name="calendar" type="df:calendar" />
 			<element name="textarea" type="df:textarea" />
 			<element name="rating" type="df:rating" />
@@ -116,30 +118,29 @@
 	<complexType name="input">
 		<complexContent>
 			<extension base="df:field">
-				<attribute name="type" type="df:inputType" />
 				<attribute name="label" type="string" />
 				<attribute name="placeholder" type="string" />
-				<attribute name="min" type="int" />
-				<attribute name="max" type="int" />
 				<attribute name="minLength" type="int" />
 				<attribute name="maxLength" type="int" />
 			</extension>
 		</complexContent>
 	</complexType>
 	
-	<!--
-    Dyna form inputType
-    HTML5 Input Types
-    -->
-    <simpleType name="inputType">
-        <restriction base="token">
-            <enumeration value="number"/>            
-            <enumeration value="text"/>            
-            <enumeration value="range"/>
-            <enumeration value="email"/>
-            <enumeration value="password"/>
-        </restriction>
-    </simpleType>
+	<complexType name="password">
+		<complexContent>
+			<extension base="df:input">
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="inputNumber">
+		<complexContent>
+			<extension base="df:input">
+				<attribute name="minValue" type="int" />
+				<attribute name="maxValue" type="int" />
+			</extension>
+		</complexContent>
+	</complexType>
 	
 	<!--
     Calendar element.

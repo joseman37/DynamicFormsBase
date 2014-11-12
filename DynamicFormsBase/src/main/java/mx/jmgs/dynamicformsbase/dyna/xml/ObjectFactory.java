@@ -81,6 +81,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Password }
+     * 
+     */
+    public Password createPassword() {
+        return new Password();
+    }
+
+    /**
      * Create an instance of {@link Row }
      * 
      */
@@ -126,6 +134,22 @@ public class ObjectFactory {
      */
     public Rating createRating() {
         return new Rating();
+    }
+
+    /**
+     * Create an instance of {@link Output }
+     * 
+     */
+    public Output createOutput() {
+        return new Output();
+    }
+
+    /**
+     * Create an instance of {@link InputNumber }
+     * 
+     */
+    public InputNumber createInputNumber() {
+        return new InputNumber();
     }
 
     /**

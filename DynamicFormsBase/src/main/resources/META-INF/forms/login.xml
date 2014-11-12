@@ -6,8 +6,8 @@
     placeholder="${bundle.username}"/>
   </df:row>
   <df:row>
-    <df:input id="password" type="password" colspan="1" rowspan="1" required="true"
-    placeholder="${bundle.password}" label="${bundle.password}"/>
+    <df:password id="password" colspan="1" rowspan="1" required="true"
+    placeholder="${bundle.password}" label="${bundle.password}" minLength="8"/>
   </df:row>
   
 </df:dynaform>

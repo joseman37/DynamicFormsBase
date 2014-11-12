@@ -24,9 +24,8 @@ public class FormField implements Serializable {
     private boolean required;
     private String placeholder;
     private String label;
-    private String inputType;
-    private Integer min;
-    private Integer max;
+    private Integer minValue;
+    private Integer maxValue;
     private Integer minLength;
     private Integer maxLength;
     
@@ -128,31 +127,31 @@ public class FormField implements Serializable {
 	}
 
 	/**
-	 * @return the min
+	 * @return the minValue
 	 */
-	public Integer getMin() {
-		return min;
+	public Integer getMinValue() {
+		return minValue;
 	}
 
 	/**
-	 * @param min the min to set
+	 * @param min the minValue to set
 	 */
-	public void setMin(Integer min) {
-		this.min = min;
+	public void setMinValue(Integer minValue) {
+		this.minValue = minValue;
 	}
 
 	/**
-	 * @return the max
+	 * @return the maxValue
 	 */
-	public Integer getMax() {
-		return max;
+	public Integer getMaxValue() {
+		return maxValue;
 	}
 
 	/**
-	 * @param max the max to set
+	 * @param max the maxValue to set
 	 */
-	public void setMax(Integer max) {
-		this.max = max;
+	public void setMaxValue(Integer maxValue) {
+		this.maxValue = maxValue;
 	}
 
 	/**
@@ -181,20 +180,6 @@ public class FormField implements Serializable {
 	 */
 	public void setMaxLength(Integer maxLength) {
 		this.maxLength = maxLength;
-	}
-
-	/**
-	 * @return the inputType
-	 */
-	public String getInputType() {
-		return inputType;
-	}
-
-	/**
-	 * @param inputType to set
-	 */
-	public void setInputType(String inputType) {
-		this.inputType = inputType;
 	}
     
 }
