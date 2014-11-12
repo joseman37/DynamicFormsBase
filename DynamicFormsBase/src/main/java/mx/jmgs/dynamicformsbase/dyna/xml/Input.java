@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;attribute name="min" type="{http://www.w3.org/2001/XMLSchema}int" />
  *       &lt;attribute name="max" type="{http://www.w3.org/2001/XMLSchema}int" />
  *       &lt;attribute name="minLength" type="{http://www.w3.org/2001/XMLSchema}int" />
- *       &lt;attribute name="maxlength" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *       &lt;attribute name="maxLength" type="{http://www.w3.org/2001/XMLSchema}int" />
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -55,8 +55,8 @@ public class Input
     protected Integer max;
     @XmlAttribute(name = "minLength")
     protected Integer minLength;
-    @XmlAttribute(name = "maxlength")
-    protected Integer maxlength;
+    @XmlAttribute(name = "maxLength")
+    protected Integer maxLength;
 
     /**
      * Gets the value of the type property.
@@ -203,27 +203,27 @@ public class Input
     }
 
     /**
-     * Gets the value of the maxlength property.
+     * Gets the value of the maxLength property.
      * 
      * @return
      *     possible object is
      *     {@link Integer }
      *     
      */
-    public Integer getMaxlength() {
-        return maxlength;
+    public Integer getMaxLength() {
+        return maxLength;
     }
 
     /**
-     * Sets the value of the maxlength property.
+     * Sets the value of the maxLength property.
      * 
      * @param value
      *     allowed object is
      *     {@link Integer }
      *     
      */
-    public void setMaxlength(Integer value) {
-        this.maxlength = value;
+    public void setMaxLength(Integer value) {
+        this.maxLength = value;
     }
 
 }

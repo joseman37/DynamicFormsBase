@@ -23,7 +23,8 @@
 
                         <pe:dynaForm id="dynaForm" value="#{dynaFormController.model}" var="data" openExtended="true">
                             <pe:dynaFormControl type="input" for="txt">
-                                <p:inputText id="txt" label="#{data.label}" value="#{data.value}" type="#{data.type}" required="#{data.required}"/>
+                                <p:inputText id="txt" label="#{data.label}" value="#{data.value}" 
+                                type="#{data.inputType}" required="#{data.required}"/>
                                 <p:watermark for="txt" value="#{data.placeholder}" />
                             </pe:dynaFormControl>
                             <pe:dynaFormControl type="calendar" for="cal" styleClass="calendar">
@@ -41,16 +42,20 @@
                                 <p:rating id="rat" value="#{data.value}" required="#{data.required}"/>
                             </pe:dynaFormControl>
                             <pe:dynaFormControl type="separator" styleClass="separator ui-state-disabled">  
-                                <h:panelGrid columns="1" style="width:100%;" columnClasses="separatorText">  
+                                <h:panelGrid columns="2" style="width:100%;" columnClasses="separatorText">
+                                	<h:outputText value="#{data.label}"/>  
                                     <p:separator/>  
                                 </h:panelGrid>  
+                            </pe:dynaFormControl>
+                            <pe:dynaFormControl type="output" styleClass="df-label df-left pe-dynaform-label" >
+                        		<h:outputText value="#{data.label}"/>
                             </pe:dynaFormControl>  
-                            <pe:dynaFormControl type="booleanchoice">  
-                                <p:selectBooleanCheckbox value="#{data.value}" required="#{data.required}"  
+                            <pe:dynaFormControl type="booleanchoice" for="bool">  
+                                <p:selectBooleanCheckbox id="bool" value="#{data.value}" required="#{data.required}"  
                                                          style="vertical-align:middle;"/>  
                             </pe:dynaFormControl>  
-                            <pe:dynaFormControl type="radiochoice">  
-                                <p:selectOneRadio value="#{data.value}" required="#{data.required}">  
+                            <pe:dynaFormControl type="radiochoice" for="rad">  
+                                <p:selectOneRadio  id="rad" value="#{data.value}" required="#{data.required}">  
                                     <f:selectItems value="#{data.selectItems}"/>  
                                 </p:selectOneRadio>  
                             </pe:dynaFormControl> 
@@ -88,8 +93,17 @@
                 }
             //]]>
             </script>
-            
-            
-        </ui:define>
+
+			<script type="text/javascript">
+         	//<![CDATA[
+         	    $function() {
+         	    	if(#{data.maxLength ne null}) {
+         	    		PF('txtInput').attr('maxlength', '#{data.maxLength}');
+         	    	}
+         	    });     
+            //]]>
+           </script>
+
+	</ui:define>
     </ui:composition>
 </html>

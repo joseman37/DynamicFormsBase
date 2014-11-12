@@ -23,6 +23,35 @@
 }
 */
 
+/* Labels */
+label, .df-label {
+	font-weight: lighter;
+}
+
+.df-left {
+	text-align: left !important;
+}
+
+/* Selects */
 .ui-selectonemenu .ui-selectonemenu-trigger {
 	width: auto !important;
+}
+
+.pe-dynaform-cell {
+	padding-bottom: 8px;
+}
+
+.pe-dynaform-label {
+	text-align: left;
+	padding: 2px, 20px, 0, 0;
+}
+
+/* Separator */
+.pe-dynaform-cell.separator {
+	padding: 10px, 0, 10px, 0;
+}
+
+.pe-dynaform-cell.separator .separatorText {
+	width: 15%;
+	padding-left: 0;
 }

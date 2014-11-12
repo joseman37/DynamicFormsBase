@@ -37,9 +37,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "formElement")
 @XmlSeeAlso({
-    Field.class,
     Label.class,
-    FormSeparator.class
+    Output.class,
+    FormSeparator.class,
+    Field.class
 })
 public abstract class FormElement {
 

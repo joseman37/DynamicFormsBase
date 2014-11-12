@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;choice maxOccurs="unbounded">
  *           &lt;element name="label" type="{http://www.dynamicforms.mx/dynaform-1.0}label"/>
+ *           &lt;element name="output" type="{http://www.dynamicforms.mx/dynaform-1.0}output"/>
  *           &lt;element name="separator" type="{http://www.dynamicforms.mx/dynaform-1.0}separator"/>
  *           &lt;element name="input" type="{http://www.dynamicforms.mx/dynaform-1.0}input"/>
  *           &lt;element name="calendar" type="{http://www.dynamicforms.mx/dynaform-1.0}calendar"/>
@@ -54,6 +55,7 @@ public class Row {
 
     @XmlElements({
         @XmlElement(name = "label", type = Label.class),
+        @XmlElement(name = "output", type = Output.class),
         @XmlElement(name = "separator", type = FormSeparator.class),
         @XmlElement(name = "input", type = Input.class),
         @XmlElement(name = "calendar", type = Calendar.class),
@@ -84,6 +86,7 @@ public class Row {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Label }
+     * {@link Output }
      * {@link Separator }
      * {@link Input }
      * {@link Calendar }

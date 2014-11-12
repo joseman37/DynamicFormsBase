@@ -5,21 +5,17 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -32,7 +28,6 @@ import mx.jmgs.dynamicformsbase.struct.TemplateStat;
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.SAXException;
 
-import freemarker.cache.CacheStorage;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -75,6 +70,32 @@ public class DynamicFormRepository implements Serializable {
  		//Cofigure Free Marker
  		cfg.setTemplateUpdateDelay(3600); // Disable cache reload
  		templateNames = new HashSet<>();
+ 		
+ 		try {
+			formList = IOUtils.readLines(DynamicFormRepository.class.getClassLoader().getResourceAsStream("META-INF/forms"));
+		} catch (IOException e) {
+			throw new RuntimeException("Error while loading dynamic forms");
+		}
+ 		
+ 		forms = new HashMap<>();
+        InputStream is;
+        for (String formName : formList) {
+            try {
+                is = DynamicFormRepository.class.getClassLoader().
+                        getResourceAsStream("META-INF/forms/" + formName);
+                DynamicForm form = readXmlForm(is);
+                forms.put(formName, form);
+                is.close();
+            } catch (JAXBException | SAXException | IOException ex) {
+                Logger.getLogger(DynamicFormRepository.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException("Error while reading dynamic forms spec data: " + ex.getMessage(), ex);
+            }
+        }
+        
+        //TODO
+        System.setProperty("org.apache.el.parser.COERCE_TO_ZERO", "false");
+        String config = System.getProperty("org.apache.el.parser.COERCE_TO_ZERO");
+        System.out.println("org.apache.el.parser.COERCE_TO_ZERO: " + config);
     }
  	
  	/**
@@ -84,35 +105,15 @@ public class DynamicFormRepository implements Serializable {
  		
  	}
 
-    public List<String> getFormList() throws IOException {
-        if (formList == null) {
-            formList = IOUtils.readLines(DynamicFormRepository.class.getClassLoader().getResourceAsStream("META-INF/forms"));
-        }
+    public List<String> getFormList() {
         return formList;
     }
 
-    public Map<String, DynamicForm> getForms() throws IOException {
-        if (forms == null) {
-            forms = new HashMap<>();
-            InputStream is;
-            for (String formName : getFormList()) {
-                try {
-                    is = DynamicFormRepository.class.getClassLoader().
-                            getResourceAsStream("META-INF/forms/" + formName);
-                    DynamicForm form = readXmlForm(is);
-                    forms.put(formName, form);
-                    is.close();
-                } catch (JAXBException | SAXException ex) {
-                    Logger.getLogger(DynamicFormRepository.class.getName()).log(Level.SEVERE, null, ex);
-                    throw new RuntimeException("Error while reading dynamic forms spec data: " + ex.getMessage(), ex);
-                }
-            }
-        }
+    public Map<String, DynamicForm> getForms() {
         return forms;
     }
     
-    @SuppressWarnings("unchecked")
-    private DynamicForm readXmlForm(InputStream is) throws JAXBException, SAXException {
+    private static DynamicForm readXmlForm(InputStream is) throws JAXBException, SAXException {
         if(is == null) {
             throw new RuntimeException("couldn't find the dynamic form definition");
         }

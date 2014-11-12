@@ -42,6 +42,7 @@
 		<!-- Permit any of these tags in any order in any number -->
 		<choice minOccurs="1" maxOccurs="unbounded">
 			<element name="label" type="df:label" />
+			<element name="output" type="df:output" />
 			<element name="separator" type="df:separator" />
 			<element name="input" type="df:input" />
 			<element name="calendar" type="df:calendar" />
@@ -76,7 +77,18 @@
 	</complexType>
 	
 	<!--
-    Label is a formElement instance
+    output is a formElement instance
+    -->
+	<complexType name="output">
+		<complexContent>
+			<extension base="df:formElement">
+				<attribute name="text" type="string" use="required" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--
+    Separator is a formElement instance
     -->
 	<complexType name="separator">
 		<complexContent>
@@ -110,7 +122,7 @@
 				<attribute name="min" type="int" />
 				<attribute name="max" type="int" />
 				<attribute name="minLength" type="int" />
-				<attribute name="maxlength" type="int" />
+				<attribute name="maxLength" type="int" />
 			</extension>
 		</complexContent>
 	</complexType>

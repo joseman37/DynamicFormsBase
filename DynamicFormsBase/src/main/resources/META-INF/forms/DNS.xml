@@ -11,7 +11,7 @@
 	</df:row>
 	<df:row>
 		<df:label text="${bundle.retry}" for="retry" />
-		<df:input id="retry" type="number" required="true" />
+		<df:input id="retry" type="number" required="true" min="0" max="650000"/>
 	</df:row>
 	<df:row>
 		<df:label text="${bundle.refresh}" for="refresh" />

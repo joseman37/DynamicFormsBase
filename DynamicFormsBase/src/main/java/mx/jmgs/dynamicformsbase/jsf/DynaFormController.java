@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.ResourceBundle;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -38,6 +37,7 @@ import mx.jmgs.dynamicformsbase.dyna.xml.FormElement;
 import mx.jmgs.dynamicformsbase.dyna.xml.FormSeparator;
 import mx.jmgs.dynamicformsbase.dyna.xml.InputType;
 import mx.jmgs.dynamicformsbase.dyna.xml.Label;
+import mx.jmgs.dynamicformsbase.dyna.xml.Output;
 import mx.jmgs.dynamicformsbase.dyna.xml.Row;
 import mx.jmgs.dynamicformsbase.singleton.JsfConfiguration;
 import mx.jmgs.dynamicformsbase.util.JsfUtil;
@@ -61,6 +61,7 @@ public class DynaFormController implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String SEPARATOR_TYPE = "separator";
+	private static final String OUTPUT_TYPE = "output";
 	
     @ManagedProperty("#{dynamicFormRepository}")
     private DynamicFormRepository forms;
@@ -127,15 +128,27 @@ public class DynaFormController implements Serializable {
                 for(FormElement element : xmlRow.getFormElements()) {
                 	if(element instanceof Label) {
                 		Label control = (Label)element;
-                		//TODO see if we need to clone the data passed to the method getText().
+                		//TODO see if we need to clone the data (bundles) passed to the method getText().
                 		String text = processTemplateText(control.getText(), bundles);
-                		DynaFormLabel  label = row.addLabel(text, control.getColspan(), control.getRowspan());
-                		if(control.getFor()!= null) {
-                			queue.add(new LabelInfo(label, control.getFor()));
-                		}
+                		
+	                	DynaFormLabel  label = row.addLabel(text, control.getColspan(), control.getRowspan());
+	                	if(control.getForControl()!= null) {
+	                		queue.add(new LabelInfo(label, control.getForControl()));
+	                	}
+                		
+                	} else if (element instanceof Output) {
+                		Output control = (Output)element;
+                		//TODO see if we need to clone the data (bundles) passed to the method getText().
+                		String text = processTemplateText(control.getText(), bundles);
+						FormField formField = new FormField();
+						formField.setLabel(text);
+            			row.addControl(formField, OUTPUT_TYPE, control.getColspan(), control.getRowspan());
                 	} else if (element instanceof FormSeparator) {
                 		FormSeparator control = (FormSeparator)element;
-                		row.addControl(control.getText(), SEPARATOR_TYPE, control.getColspan(), control.getRowspan());
+                		String text = processTemplateText(control.getText(), bundles);
+						FormField formField = new FormField();
+						formField.setLabel(text);
+                		row.addControl(formField, SEPARATOR_TYPE, control.getColspan(), control.getRowspan());
                 	} else if (element instanceof Field) {
 						Field field = (Field) element;
 						FormField formField = new FormField(field.getId(), field.isRequired());
@@ -223,7 +236,7 @@ public class DynaFormController implements Serializable {
 							try {
 								InputType type = JsfUtil.callBeanGetter(field, "getType");
 								if(type != null) {
-			                        formField.setType(type.value());
+			                        formField.setInputType(type.value());
 		                        }
 							} catch(NoSuchMethodException e) {
 								// continue
@@ -232,7 +245,7 @@ public class DynaFormController implements Serializable {
 							throw new RuntimeException("Error while processing dynamic form",e);
 						}
                        
-                        //crete the field.
+                        //create the field.
                         //get the XmlType annotation value as the dynamic control element type.
 						//if annotation is null, get the class name in lower case.
 						String name = field.getClass().getAnnotation(XmlType.class).name();
@@ -262,7 +275,10 @@ public class DynaFormController implements Serializable {
         List<FormField> formFields = new ArrayList<FormField>();
 		for (DynaFormControl dynaFormControl : model.getControls()) {
 			if (dynaFormControl.getData() instanceof FormField) {
-				formFields.add((FormField) dynaFormControl.getData());
+				FormField control = (FormField) dynaFormControl.getData();
+				if(control.getName() != null) {
+					formFields.add(control);
+				}
 			}
 		}
         return formFields;
@@ -329,7 +345,7 @@ public class DynaFormController implements Serializable {
      * @author Jose
      *
      */
-    private class LabelInfo {
+    public class LabelInfo {
     	
     	private DynaFormLabel label;
     	

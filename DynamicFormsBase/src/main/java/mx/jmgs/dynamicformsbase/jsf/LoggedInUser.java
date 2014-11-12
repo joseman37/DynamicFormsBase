@@ -27,7 +27,7 @@ public class LoggedInUser implements Serializable {
 
     public LoggedInUser() {
         preferences = new HashMap<>();
-        preferences.put("theme", "bootstrap");
+        preferences.put("theme", "aristo");
     }
     
     public Map<String, String> getPreferences() {

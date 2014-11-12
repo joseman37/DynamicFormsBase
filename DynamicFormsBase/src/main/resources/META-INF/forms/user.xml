@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <df:dynaform xmlns:df="http://www.dynamicforms.mx/dynaform-1.0">
 	<df:row>
-		<df:label text="Short Name" for="ShortName" />
-		<df:label text="Street" />
+		<df:output text="Short Name" />
+		<df:output text="Street" />
 	</df:row>
 	<df:row>
-		<df:input id="ShortName" required="true" />
+		<df:input id="ShortName" required="true" label="Short Name"/>
 		<df:input id="Street" colspan="2" />
 	</df:row>
 	<df:row>
-		<df:label text="Long Name" for="LongName" />
-		<df:label text="Zip Code, City" />
+		<df:output text="Long Name"/>
+		<df:output text="Zip Code, City" />
 	</df:row>
 	<df:row>
-		<df:input id="LongName" required="true" />
-		<df:input id="ZipCity" colspan="2" />
+		<df:input id="LongName" required="true" label="Long Name"/>
+		<df:input id="ZipCity" colspan="2" maxLength="10"/>
 	</df:row>
 	<df:row>
 		<df:separator text="MakeChoice" colspan="3" />
 	</df:row>
 	<df:row>
-		<df:label text="PrimeFaces fan?" />
-		<df:label text="Married?" />
-		<df:label text="Children" />
+		<df:output text="PrimeFaces fan?" />
+		<df:output text="Married?" />
+		<df:output text="Children" />
 	</df:row>
 	<df:row>
 		<df:radiochoice id="fan">

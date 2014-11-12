@@ -24,7 +24,7 @@ public class FormField implements Serializable {
     private boolean required;
     private String placeholder;
     private String label;
-    private String type;
+    private String inputType;
     private Integer min;
     private Integer max;
     private Integer minLength;
@@ -35,6 +35,10 @@ public class FormField implements Serializable {
      */
     private List<SelectItem> selectItems;
  
+    public FormField() {
+        
+    }
+    
     public FormField(String name, boolean required) {
         this.name = name;
         this.required = required;
@@ -180,19 +184,17 @@ public class FormField implements Serializable {
 	}
 
 	/**
-	 * @return the type
+	 * @return the inputType
 	 */
-	public String getType() {
-		return type;
+	public String getInputType() {
+		return inputType;
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param inputType to set
 	 */
-	public void setType(String type) {
-		this.type = type;
+	public void setInputType(String inputType) {
+		this.inputType = inputType;
 	}
-    
-    
     
 }
